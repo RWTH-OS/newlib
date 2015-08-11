@@ -34,9 +34,11 @@
 
 typedef void (*ctp)();
 
+int __attribute__((weak)) __CTOR_LIST__ = 0;
+int __attribute__((weak)) __DTOR_LIST__ = 0;
+
 void __do_global_ctors(void)
 {
-	extern int __CTOR_LIST__;
 	int *c = &__CTOR_LIST__;
 
 	c++;
@@ -49,7 +51,6 @@ void __do_global_ctors(void)
 
 void __do_global_dtors(void)
 {
-	extern int __DTOR_LIST__;
 	int *c = &__DTOR_LIST__;
 	int *cp = c;
 	
