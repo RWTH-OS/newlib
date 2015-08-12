@@ -39,6 +39,10 @@ extern atexit
 extern exit
 phys equ 0x40200000
 _start:
+   ; create first frame
+   push rbp
+   mov rbp, rsp
+
    ; initialize BSS
    mov rdi, __bss_start
    mov rcx, _end
@@ -55,6 +59,9 @@ _start:
    ; register a function to be called at normal process termination
    mov rdi, _fini
    call atexit
+
+   ; remove first frame
+   pop rbp
 
    ; set default environment
    mov rax, environ
@@ -101,6 +108,13 @@ global get_ticks
 get_ticks:
    mov rcx, phys - 0x1000 + 0x24
    mov rax, qword [rcx]
+   ret
+
+global get_num_cpus
+get_num_cpus:
+   mov rcx, phys - 0x1000 + 0x20
+   xor rax, rax
+   mov eax, dword [rcx]
    ret
 
 SECTION .note.GNU-stack noalloc noexec nowrite progbits
