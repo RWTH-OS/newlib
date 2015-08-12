@@ -68,15 +68,20 @@ CONFIG_CLEAN_VPATH_FILES =
 LIBRARIES = $(noinst_LIBRARIES)
 ARFLAGS = cru
 lib_a_AR = $(AR) $(ARFLAGS)
-@MAY_SUPPLY_SYSCALLS_TRUE@am__DEPENDENCIES_1 = errno.o chown.o dup2.o \
-@MAY_SUPPLY_SYSCALLS_TRUE@	environ.o execve.o fork.o getpid.o \
-@MAY_SUPPLY_SYSCALLS_TRUE@	kill.o lseek.o pthread_init.o \
-@MAY_SUPPLY_SYSCALLS_TRUE@	readlink.o stat.o times.o wait.o \
-@MAY_SUPPLY_SYSCALLS_TRUE@	close.o dup.o _exit.o fstat.o \
-@MAY_SUPPLY_SYSCALLS_TRUE@	gettod.o isatty.o link.o open.o \
-@MAY_SUPPLY_SYSCALLS_TRUE@	read.o sbrk.o symlink.o unlink.o \
-@MAY_SUPPLY_SYSCALLS_TRUE@	write.o
-am_lib_a_OBJECTS =
+lib_a_LIBADD =
+am_lib_a_OBJECTS = lib_a-errno.$(OBJEXT) lib_a-chown.$(OBJEXT) \
+	lib_a-dup2.$(OBJEXT) lib_a-environ.$(OBJEXT) \
+	lib_a-execve.$(OBJEXT) lib_a-fork.$(OBJEXT) \
+	lib_a-getpid.$(OBJEXT) lib_a-kill.$(OBJEXT) \
+	lib_a-lseek.$(OBJEXT) lib_a-pthread_init.$(OBJEXT) \
+	lib_a-readlink.$(OBJEXT) lib_a-stat.$(OBJEXT) \
+	lib_a-times.$(OBJEXT) lib_a-wait.$(OBJEXT) \
+	lib_a-close.$(OBJEXT) lib_a-dup.$(OBJEXT) \
+	lib_a-_exit.$(OBJEXT) lib_a-fstat.$(OBJEXT) \
+	lib_a-gettod.$(OBJEXT) lib_a-isatty.$(OBJEXT) \
+	lib_a-link.$(OBJEXT) lib_a-open.$(OBJEXT) lib_a-read.$(OBJEXT) \
+	lib_a-sbrk.$(OBJEXT) lib_a-symlink.$(OBJEXT) \
+	lib_a-unlink.$(OBJEXT) lib_a-write.$(OBJEXT)
 lib_a_OBJECTS = $(am_lib_a_OBJECTS)
 DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp =
@@ -85,7 +90,7 @@ COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
 LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
-SOURCES = $(lib_a_SOURCES) $(EXTRA_lib_a_SOURCES)
+SOURCES = $(lib_a_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -204,12 +209,7 @@ INCLUDES = $(NEWLIB_CFLAGS) $(CROSS_CFLAGS) $(TARGET_CFLAGS)
 AM_CCASFLAGS = $(INCLUDES)
 noinst_LIBRARIES = lib.a
 NASMFLAGS = -felf64 
-@MAY_SUPPLY_SYSCALLS_FALSE@extra_objs = 
-@MAY_SUPPLY_SYSCALLS_TRUE@extra_objs = errno.o chown.o dup2.o environ.o execve.o fork.o getpid.o kill.o lseek.o pthread_init.o readlink.o stat.o times.o wait.o close.o dup.o _exit.o fstat.o gettod.o isatty.o link.o open.o read.o sbrk.o symlink.o unlink.o write.o
-lib_a_SOURCES = 
-lib_a_LIBADD = $(extra_objs)
-EXTRA_lib_a_SOURCES = errno.c chown.c dup2.c environ.c execve.c fork.c getpid.c kill.c lseek.c pthread_init.c readlink.c stat.c times.c wait.c close.c dup.c _exit.c fstat.c gettod.c isatty.c link.c open.c read.c sbrk.c symlink.c unlink.c write.c
-lib_a_DEPENDENCIES = $(extra_objs)
+lib_a_SOURCES = errno.c chown.c dup2.c environ.c execve.c fork.c getpid.c kill.c lseek.c pthread_init.c readlink.c stat.c times.c wait.c close.c dup.c _exit.c fstat.c gettod.c isatty.c link.c open.c read.c sbrk.c symlink.c unlink.c write.c
 lib_a_CCASFLAGS = $(AM_CCASFLAGS)
 lib_a_CFLAGS = $(AM_CFLAGS)
 ACLOCAL_AMFLAGS = -I ../../..
@@ -217,7 +217,7 @@ CONFIG_STATUS_DEPENDENCIES = $(newlib_basedir)/configure.host
 all: all-am
 
 .SUFFIXES:
-.SUFFIXES: .S .c .o .obj
+.SUFFIXES: .c .o .obj
 am--refresh: Makefile
 	@:
 $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am  $(am__configure_deps)
@@ -511,7 +511,7 @@ distclean-tags:
 	-rm -f cscope.out cscope.in.out cscope.po.out cscope.files
 check-am:
 check: check-am
-all-am: Makefile $(LIBRARIES)
+all-am: Makefile $(LIBRARIES) all-local
 installdirs:
 install: install-am
 install-exec: install-exec-am
@@ -615,8 +615,8 @@ uninstall-am:
 
 .MAKE: install-am install-strip
 
-.PHONY: CTAGS GTAGS all all-am am--refresh check check-am clean \
-	clean-cscope clean-generic clean-noinstLIBRARIES cscope \
+.PHONY: CTAGS GTAGS all all-am all-local am--refresh check check-am \
+	clean clean-cscope clean-generic clean-noinstLIBRARIES cscope \
 	cscopelist ctags distclean distclean-compile distclean-generic \
 	distclean-tags dvi dvi-am html html-am info info-am install \
 	install-am install-data install-data-am install-dvi \
@@ -629,13 +629,10 @@ uninstall-am:
 	tags uninstall uninstall-am
 
 
-.S.o:
-	$(COMPILE) -c $< -o $@
-
 crt0.o: crt0.asm
 	$(NASM) $(NASMFLAGS) -o $@ $<
 
-@MAY_SUPPLY_SYSCALLS_TRUE@all: crt0.o
+all-local: crt0.o
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
