@@ -32,8 +32,8 @@ extern _end
 extern main
 extern environ
 extern __env
-extern __do_global_dtors
-extern __do_global_ctors
+extern _init
+extern _fini
 extern pthread_init
 extern atexit
 extern exit
@@ -49,12 +49,12 @@ _start:
    ; if available, we have to initialize the pthread library
    call pthread_init
 
-   ; register a function to be called at normal process termination
-   mov rdi, __do_global_dtors
-   call atexit
-
    ; call init function
-   call __do_global_ctors
+   call _init
+
+   ; register a function to be called at normal process termination
+   mov rdi, _fini
+   call atexit
 
    ; set default environment
    mov rax, environ
