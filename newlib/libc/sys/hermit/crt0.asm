@@ -106,7 +106,7 @@ get_cpufreq:
 
 global get_ticks
 get_ticks:
-   mov rcx, phys - 0x1000 + 0x24
+   mov rcx, phys - 0x1000 + 0x28
    mov rax, qword [rcx]
    ret
 
