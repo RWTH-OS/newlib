@@ -35,7 +35,7 @@
  * Just a weak symbol for crt0. Will be overloaded by
  * the pthread library.
  */
-int __attribute__((weak)) pthread_init(void)
+void __attribute__((weak)) _hermit_reent_init(void)
 {
 	return 0;
 }

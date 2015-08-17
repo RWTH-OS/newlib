@@ -27,45 +27,37 @@
 [BITS 64]
 SECTION .text
 global _start
-extern __bss_start
-extern _end
 extern main
 extern environ
 extern __env
 extern _init
 extern _fini
-extern pthread_init
+extern _hermit_reent_init
 extern atexit
 extern exit
 phys equ 0x40200000
 _start:
    ; create first frame
-   push rbp
+   xor rbp, rbp
+   and rsp, ~0xF ; align rsp
+   push rbp ; pseudo return address
+   push rbp ; pseudo base pointer
    mov rbp, rsp
+   and rsp, ~0xF ; align rsp
 
-   ; initialize BSS
-   mov rdi, __bss_start
-   mov rcx, _end
-   sub rcx, rdi
-   xor rax, rax
-   rep; stosb
-
-   ; if available, we have to initialize the pthread library
-   call pthread_init
-
-   ; call init function
-   call _init
+   ; initialize libc
+   call _hermit_reent_init
 
    ; register a function to be called at normal process termination
    mov rdi, _fini
    call atexit
 
-   ; remove first frame
-   pop rbp
+   ; call init function
+   call _init
 
    ; set default environment
    mov rax, environ
-   mov rdx, [rsp+16]
+   mov rdx, [rsp+32]
    cmp rdx, 0
    je L3
    mov qword [rax], rdx
@@ -77,12 +69,9 @@ L4:
 
    ; arguments are already on the stack
    ; call the user's function
-   pop rdi   ; argc
-   pop rsi   ; argv pointer
-   pop rdx   ; env pointer
-
-   ; align stack
-   and rsp, ~0xF
+   mov rdi, [rbp+16]   ; argc
+   mov rsi, [rbp+24]   ; argv pointer
+   mov rdx, [rbp+32]   ; env pointer
 
    call main
 
