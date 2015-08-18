@@ -70,13 +70,12 @@ ARFLAGS = cru
 lib_a_AR = $(AR) $(ARFLAGS)
 lib_a_LIBADD =
 am_lib_a_OBJECTS = lib_a-errno.$(OBJEXT) lib_a-chown.$(OBJEXT) \
-	lib_a-dup2.$(OBJEXT) lib_a-environ.$(OBJEXT) \
-	lib_a-execve.$(OBJEXT) lib_a-fork.$(OBJEXT) \
-	lib_a-getpid.$(OBJEXT) lib_a-kill.$(OBJEXT) \
-	lib_a-lseek.$(OBJEXT) lib_a-init.$(OBJEXT) \
-	lib_a-readlink.$(OBJEXT) lib_a-stat.$(OBJEXT) \
-	lib_a-times.$(OBJEXT) lib_a-wait.$(OBJEXT) \
-	lib_a-close.$(OBJEXT) lib_a-dup.$(OBJEXT) \
+	lib_a-environ.$(OBJEXT) lib_a-execve.$(OBJEXT) \
+	lib_a-fork.$(OBJEXT) lib_a-getpid.$(OBJEXT) \
+	lib_a-kill.$(OBJEXT) lib_a-lseek.$(OBJEXT) \
+	lib_a-init.$(OBJEXT) lib_a-readlink.$(OBJEXT) \
+	lib_a-stat.$(OBJEXT) lib_a-times.$(OBJEXT) \
+	lib_a-wait.$(OBJEXT) lib_a-close.$(OBJEXT) \
 	lib_a-_exit.$(OBJEXT) lib_a-fstat.$(OBJEXT) \
 	lib_a-gettod.$(OBJEXT) lib_a-isatty.$(OBJEXT) \
 	lib_a-link.$(OBJEXT) lib_a-open.$(OBJEXT) lib_a-read.$(OBJEXT) \
@@ -209,7 +208,7 @@ INCLUDES = $(NEWLIB_CFLAGS) $(CROSS_CFLAGS) $(TARGET_CFLAGS)
 AM_CCASFLAGS = $(INCLUDES)
 noinst_LIBRARIES = lib.a
 NASMFLAGS = -felf64 
-lib_a_SOURCES = errno.c chown.c dup2.c environ.c execve.c fork.c getpid.c kill.c lseek.c init.c readlink.c stat.c times.c wait.c close.c dup.c _exit.c fstat.c gettod.c isatty.c link.c open.c read.c sbrk.c symlink.c unlink.c write.c
+lib_a_SOURCES = errno.c chown.c environ.c execve.c fork.c getpid.c kill.c lseek.c init.c readlink.c stat.c times.c wait.c close.c _exit.c fstat.c gettod.c isatty.c link.c open.c read.c sbrk.c symlink.c unlink.c write.c
 lib_a_CCASFLAGS = $(AM_CCASFLAGS)
 lib_a_CFLAGS = $(AM_CFLAGS)
 ACLOCAL_AMFLAGS = -I ../../..
@@ -284,12 +283,6 @@ lib_a-chown.o: chown.c
 lib_a-chown.obj: chown.c
 	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-chown.obj `if test -f 'chown.c'; then $(CYGPATH_W) 'chown.c'; else $(CYGPATH_W) '$(srcdir)/chown.c'; fi`
 
-lib_a-dup2.o: dup2.c
-	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-dup2.o `test -f 'dup2.c' || echo '$(srcdir)/'`dup2.c
-
-lib_a-dup2.obj: dup2.c
-	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-dup2.obj `if test -f 'dup2.c'; then $(CYGPATH_W) 'dup2.c'; else $(CYGPATH_W) '$(srcdir)/dup2.c'; fi`
-
 lib_a-environ.o: environ.c
 	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-environ.o `test -f 'environ.c' || echo '$(srcdir)/'`environ.c
 
@@ -361,12 +354,6 @@ lib_a-close.o: close.c
 
 lib_a-close.obj: close.c
 	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-close.obj `if test -f 'close.c'; then $(CYGPATH_W) 'close.c'; else $(CYGPATH_W) '$(srcdir)/close.c'; fi`
-
-lib_a-dup.o: dup.c
-	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-dup.o `test -f 'dup.c' || echo '$(srcdir)/'`dup.c
-
-lib_a-dup.obj: dup.c
-	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-dup.obj `if test -f 'dup.c'; then $(CYGPATH_W) 'dup.c'; else $(CYGPATH_W) '$(srcdir)/dup.c'; fi`
 
 lib_a-_exit.o: _exit.c
 	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-_exit.o `test -f '_exit.c' || echo '$(srcdir)/'`_exit.c

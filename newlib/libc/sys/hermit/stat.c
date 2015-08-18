@@ -40,7 +40,15 @@
 #include "syscall.h"
 
 int
-_DEFUN (stat_r, (ptr, file, st),
+_DEFUN (stat, (file, st),
+        const char  *file _AND
+        struct stat *st)
+{
+	return _stat_r(_REENT, file, st);
+}
+
+int
+_DEFUN (_stat_r, (ptr, file, st),
 	struct _reent *ptr _AND
         const char  *file _AND
         struct stat *st)

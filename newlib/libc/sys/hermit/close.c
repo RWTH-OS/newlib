@@ -34,6 +34,13 @@
 #include "syscall.h"
 
 int
+_DEFUN (close, (fildes),
+        int fildes)
+{
+	return _close_r(_REENT, fildes);
+}
+
+int
 _DEFUN (_close_r, (ptr, fildes),
 	struct _reent *ptr _AND
         int fildes)

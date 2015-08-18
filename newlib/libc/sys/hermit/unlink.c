@@ -33,6 +33,13 @@
 #include "warning.h"
 
 int
+_DEFUN (unlink, (name),
+        const char *name)
+{
+	return _unlink_r(_REENT, name);
+}
+
+int
 _DEFUN (_unlink_r, (ptr, name),
 	struct _reent *ptr _AND
         const char *name)

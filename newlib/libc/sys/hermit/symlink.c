@@ -32,12 +32,22 @@
 #include <errno.h>
 #include "warning.h"
 
+#if 0
+int
+_DEFUN (symlink, (path1, path2),
+        const char *path1 _AND
+        const char *path2)
+{
+	return _symlink_r(_REENT, path1, path2);
+}
+#endif
+
 int
 _DEFUN (_symlink_r, (ptr, path1, path2),
 	struct _reent *ptr _AND
         const char *path1 _AND
         const char *path2)
 {
-  ptr->_errno = ENOSYS;
-  return -1;
+	ptr->_errno = ENOSYS;
+	return -1;
 }

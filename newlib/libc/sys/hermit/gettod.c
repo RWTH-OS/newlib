@@ -37,6 +37,14 @@
 struct timeval;
 
 int
+_DEFUN (gettimeofday, (ptimeval, ptimezone),
+        struct timeval  *ptimeval  _AND
+        void *ptimezone)
+{
+	return _gettimeofday_r(_REENT, ptimeval, ptimezone);
+}
+
+int
 _DEFUN (_gettimeofday_r, (ptr, ptimeval, ptimezone),
 	struct _reent *ptr _AND
         struct timeval  *ptimeval  _AND

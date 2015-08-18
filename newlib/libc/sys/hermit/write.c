@@ -34,7 +34,16 @@
 #include "syscall.h"
 
 _ssize_t
-_DEFUN (_write_r, (ptr, file, ptr, len),
+_DEFUN (write, (file, ptr, len),
+	int   file  _AND
+	const void *ptr   _AND
+	size_t  len)
+{
+	return _write_r(_REENT, file, ptr, len);
+}
+
+_ssize_t
+_DEFUN (_write_r, (r, file, ptr, len),
 	struct _reent *r _AND
         int   file  _AND
         const void *ptr   _AND

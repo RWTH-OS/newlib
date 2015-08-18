@@ -33,6 +33,16 @@
 #include "warning.h"
 #include "syscall.h"
 
+
+int
+_DEFUN (execve, (name, argv, env),
+        const char  * name  _AND
+        char * const * argv  _AND
+        char * const * env)
+{
+	return _execve_r(_REENT, name, argv, env);
+}
+
 int
 _DEFUN (_execve_r, (ptr, name, argv, env),
 	struct _reent * ptr _AND

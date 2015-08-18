@@ -33,6 +33,18 @@
 #include <sys/types.h>
 #include "warning.h"
 
+
+#if 0
+int
+_DEFUN (chown, (path, owner, group),
+        const char *path  _AND
+        uid_t owner _AND
+        gid_t group)
+{
+	return _chown_r(_REENT, path, owner, group);
+}
+#endif
+
 int
 _DEFUN (_chown_r, (ptr, path, owner, group),
         struct _reent *ptr _AND

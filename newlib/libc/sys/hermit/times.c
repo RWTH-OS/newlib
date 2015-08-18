@@ -34,6 +34,13 @@
 #include "syscall.h"
 
 clock_t
+_DEFUN (times, (buf),
+	struct tms *buf)
+{
+	return _times_r(_REENT, buf);
+}
+
+clock_t
 _DEFUN (_times_r, (ptr, buf),
 	struct _reent *ptr _AND
         struct tms *buf)

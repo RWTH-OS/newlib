@@ -34,6 +34,15 @@
 #include "syscall.h"
 
 int
+_DEFUN (open, (file, flags, mode),
+	const char *file  _AND
+	int   flags _AND
+	int   mode)
+{
+	return _open_r(_REENT, file, flags, mode);
+}
+
+int
 _DEFUN (_open_r, (ptr, file, flags, mode),
 	struct _reent *ptr _AND
         const char *file  _AND

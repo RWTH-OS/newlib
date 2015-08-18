@@ -33,6 +33,17 @@
 #include <sys/types.h>
 #include "warning.h"
 
+#if 0
+int
+_DEFUN (readlink, (path, buf, bufsize),
+        const char *path _AND
+        char *buf _AND
+        size_t bufsize)
+{
+	return _readlink_r(_REENT, path, buf, bufsize);
+}
+#endif
+
 int
 _DEFUN (_readlink_r, (ptr, path, buf, bufsize),
 	struct _reent *ptr _AND

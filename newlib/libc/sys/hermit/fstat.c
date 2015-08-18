@@ -36,6 +36,14 @@
 #include "syscall.h"
 
 int
+_DEFUN (fstat, (fildes, st),
+	int	fildes _AND
+	struct stat *st)
+{
+	return _fstat_r(_REENT, fildes, st);
+}
+
+int
 _DEFUN (_fstat_r, (ptr, fildes, st),
 	struct _reent *ptr _AND
         int          fildes _AND

@@ -33,6 +33,14 @@
 #include "warning.h"
 
 int
+_DEFUN (kill, (pid, sig),
+	int pid  _AND
+	int sig)
+{
+	return _kill_r(_REENT, pid, sig);
+}
+
+int
 _DEFUN (_kill_r, (ptr, pid, sig),
 	struct _reent *ptr _AND
         int pid  _AND

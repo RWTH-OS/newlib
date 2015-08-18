@@ -34,6 +34,13 @@
 #include "syscall.h"
 
 int
+_DEFUN (getpid, (),
+	)
+{
+	return _getpid_r(_REENT);
+}
+
+int
 _DEFUN (_getpid_r, (ptr),
         struct _reent *ptr)
 {

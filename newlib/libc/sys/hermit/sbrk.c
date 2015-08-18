@@ -33,6 +33,13 @@
 #include "syscall.h"
 
 void*
+_DEFUN (sbrk, (incr),
+	ptrdiff_t incr)
+{
+	return _sbrk_r(_REENT, incr);
+}
+
+void*
 _DEFUN (_sbrk_r, (ptr, incr),
 	struct _reent *ptr _AND
 	ptrdiff_t incr)

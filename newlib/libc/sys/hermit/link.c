@@ -33,6 +33,14 @@
 #include "warning.h"
 
 int
+_DEFUN (link, (existing, new),
+	const char *existing _AND
+	const char *new)
+{
+	return _link_r(_REENT, existing, new);
+}
+
+int
 _DEFUN (_link_r, (ptr, existing, new),
 	struct _reent *ptr _AND
         const char *existing _AND

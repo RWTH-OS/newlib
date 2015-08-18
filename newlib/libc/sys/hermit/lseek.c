@@ -34,6 +34,15 @@
 #include "syscall.h"
 
 _off_t
+_DEFUN (lseek, (file, ptr, dir),
+	int		file  _AND
+	_off_t		ptr   _AND
+	int		dir)
+{
+	return _lseek_r(_REENT, file, ptr, dir);
+}
+
+_off_t
 _DEFUN (_lseek_r, (p, file, ptr, dir),
 	struct _reent	*p _AND
         int		file  _AND
