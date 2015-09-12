@@ -39,7 +39,6 @@ phys equ 0x40200000
 _start:
    ; create first frame
    xor rbp, rbp
-   and rsp, ~0xF ; align rsp
    push rbp ; pseudo return address
    push rbp ; pseudo base pointer
    mov rbp, rsp
