@@ -35,6 +35,7 @@ extern _fini
 extern _hermit_reent_init
 extern atexit
 extern exit
+extern optind
 phys equ 0x40200000
 _start:
    ; create first frame
@@ -53,6 +54,10 @@ _start:
 
    ; call init function
    call _init
+
+   ; optind is the index of the next element to be processed in argv
+   ; per default, we start at 1
+   mov dword [optind], 1
 
    ; set default environment
    mov rax, environ
