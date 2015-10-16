@@ -97,10 +97,11 @@ get_cpufreq:
    mov eax, dword [rcx]
    ret
 
-global get_ticks
-get_ticks:
-   mov rcx, phys - 0x1000 + 0x28
-   mov rax, qword [rcx]
+global isle_id
+isle_id:
+   mov rcx, phys - 0x1000 + 0x34
+   xor rax, rax
+   mov eax, dword [rcx]
    ret
 
 global get_num_cpus
@@ -109,5 +110,15 @@ get_num_cpus:
    xor rax, rax
    mov eax, dword [rcx]
    ret
+
+SECTION .note.ident
+ALIGN 4
+DD Ln1 - Ln0          ; name size (not including padding)
+DD 0                  ; desc size (not including padding)
+DD 0x01               ; type
+Ln0:
+DB "HermitCore", 0    ; name
+Ln1:
+ALIGN 4
 
 SECTION .note.GNU-stack noalloc noexec nowrite progbits
