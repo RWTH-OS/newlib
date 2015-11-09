@@ -56,8 +56,7 @@ _start:
    call _init
 
    ; optind is the index of the next element to be processed in argv
-   ; per default, we start at 1
-   mov dword [optind], 1
+   mov dword [optind], 0
 
    ; set default environment
    mov rax, environ
