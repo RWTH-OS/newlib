@@ -26,18 +26,19 @@
  */
 
 #include "config.h"
-#include "syscall.h"
 #include <reent.h>
 #include <_ansi.h>
 #include <_syslist.h>
 #include <errno.h>
+
+void sys_exit(int);
 
 _VOID
 _DEFUN (_exit, (rc),
 	int rc)
 {
 	/* task exit */
-	SYSCALL1(__NR_exit, rc); 
+	sys_exit(rc);
 
 	/* Convince GCC that this function never returns.  */
 	for (;;)

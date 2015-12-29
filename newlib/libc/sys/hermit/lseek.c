@@ -31,7 +31,8 @@
 #include <_syslist.h>
 #include <errno.h>
 #include "warning.h"
-#include "syscall.h"
+
+extern int sys_lseek(int file, _off_t ptr, int dir);
 
 _off_t
 _DEFUN (lseek, (file, ptr, dir),
@@ -51,7 +52,7 @@ _DEFUN (_lseek_r, (p, file, ptr, dir),
 {
 	int ret;	
 
-	ret = SYSCALL3(__NR_lseek, file, ptr, dir);
+	ret = sys_lseek(file, ptr, dir);
 	if (ret < 0) {
 		p->_errno = -ret;
 		ret = -1;

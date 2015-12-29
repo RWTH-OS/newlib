@@ -32,6 +32,8 @@
 extern "C" {
 #endif
 
+extern int libc_sd;
+
 #define __NR_exit 		0
 #define __NR_write		1
 #define __NR_open		2

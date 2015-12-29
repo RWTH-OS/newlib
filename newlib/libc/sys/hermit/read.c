@@ -31,7 +31,8 @@
 #include <_syslist.h>
 #include <errno.h>
 #include "warning.h"
-#include "syscall.h"
+
+extern _ssize_t sys_read(int file, void* ptr, size_t len);
 
 _ssize_t
 _DEFUN (read, (file, ptr, len),
@@ -51,7 +52,7 @@ _DEFUN (_read_r, (p, file, ptr, len),
 {
 	int ret;
 
-	ret = SYSCALL3(__NR_read, file, ptr, len);
+	ret = sys_read(file, ptr, len);
 	if (ret < 0) {
 		p->_errno = -ret;
 		ret = -1;

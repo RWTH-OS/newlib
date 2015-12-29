@@ -33,7 +33,6 @@
 #include <sys/stat.h>
 #include <errno.h>
 #include "warning.h"
-#include "syscall.h"
 
 int
 _DEFUN (fstat, (fildes, st),

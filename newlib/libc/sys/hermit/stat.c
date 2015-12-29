@@ -37,7 +37,8 @@
 #include <sys/stat.h>
 #include <errno.h>
 #include "warning.h"
-#include "syscall.h"
+
+extern int sys_stat(const char* file, struct stat *st);
 
 int
 _DEFUN (stat, (file, st),
@@ -60,11 +61,11 @@ _DEFUN (_stat_r, (ptr, file, st),
 		return -1;
 	}
 
-	ret = SYSCALL2(__NR_stat, file, st);
+	ret = sys_stat(file, st);
 	if (ret < 0) {
 		ptr->_errno = -ret;
 		return -1;
 	}
-	
+
 	return 0;
 }

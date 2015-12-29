@@ -31,8 +31,8 @@
 #include <_syslist.h>
 #include <errno.h>
 #include "warning.h"
-#include "syscall.h"
 
+extern int sys_execve(const char* name, char * const * argv, char * const * env);
 
 int
 _DEFUN (execve, (name, argv, env),
@@ -52,7 +52,7 @@ _DEFUN (_execve_r, (ptr, name, argv, env),
 {
 	int ret;
 
-	ret = SYSCALL3(__NR_execve, name, argv, env);
+	ret = sys_execve(name, argv, env);
 	if (ret < 0) {
 		ptr->_errno = -ret;
 		ret = -1;

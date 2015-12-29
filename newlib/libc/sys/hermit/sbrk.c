@@ -30,7 +30,8 @@
 #include <_syslist.h>
 #include <errno.h>
 #include "warning.h"
-#include "syscall.h"
+
+extern void* sys_sbrk(int incr);
 
 void*
 _DEFUN (sbrk, (incr),
@@ -46,11 +47,11 @@ _DEFUN (_sbrk_r, (ptr, incr),
 {
 	size_t ret;
 
-	ret = SYSCALL1(__NR_sbrk, incr);
+	ret = sys_sbrk(incr);
 	if (ret < 0x1000) {
 		ptr->_errno = -ret;
 		ret = -1;
 	}
 
 	return (void*) ret;
-} 
+}

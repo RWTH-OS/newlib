@@ -31,7 +31,8 @@
 #include <_syslist.h>
 #include <errno.h>
 #include "warning.h"
-#include "syscall.h"
+
+extern int sys_fork(void);
 
 int
 _DEFUN (_fork_r, (ptr),
@@ -40,7 +41,7 @@ _DEFUN (_fork_r, (ptr),
 	int ret;
 
 	/* create a child process */
-	ret = SYSCALL0(__NR_fork);
+	ret = sys_fork();
 	if (ret < 0) {
 		ptr->_errno = -ret;
 		ret = -1;

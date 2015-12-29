@@ -31,7 +31,8 @@
 #include <_syslist.h>
 #include <errno.h>
 #include "warning.h"
-#include "syscall.h"
+
+extern int sys_open(const char* file, int flags, int mode);
 
 int
 _DEFUN (open, (file, flags, mode),
@@ -51,7 +52,7 @@ _DEFUN (_open_r, (ptr, file, flags, mode),
 {
 	int ret;
 
-        ret = SYSCALL3(__NR_open, file, flags, mode);
+        ret = sys_open(file, flags, mode);
 	if (ret < 0) {
 		ptr->_errno = -ret;
 		ret = -1;

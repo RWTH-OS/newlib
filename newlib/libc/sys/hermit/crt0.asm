@@ -26,7 +26,7 @@
 
 [BITS 64]
 SECTION .text
-global _start
+global libc_start
 extern main
 extern environ
 extern __env
@@ -36,14 +36,18 @@ extern _hermit_reent_init
 extern atexit
 extern exit
 extern optind
-phys equ 0x40200000
-_start:
+phys equ 0x200000
+libc_start:
    ; create first frame
-   xor rbp, rbp
-   push rbp ; pseudo return address
-   push rbp ; pseudo base pointer
-   mov rbp, rsp
-   and rsp, ~0xF ; align rsp
+   ;xor rbp, rbp
+   ;push rbp ; pseudo return address
+   ;push rbp ; pseudo base pointer
+   ;mov rbp, rsp
+   ;and rsp, ~0xF ; align rsp
+
+   ; save arguments
+   push rdi
+   push rsi
 
    ; initialize libc
    call _hermit_reent_init
@@ -60,11 +64,11 @@ _start:
 
    ; set default environment
    mov rax, environ
-   mov rdx, [rsp+32]
-   cmp rdx, 0
-   je L3
-   mov qword [rax], rdx
-   jmp L4
+   ;mov rdx, [rsp+32]
+   ;cmp rdx, 0
+   ;je L3
+   ;mov qword [rax], rdx
+   ;jmp L4
 L3:
    mov rdx, __env
    mov qword [rax], rdx
@@ -72,9 +76,12 @@ L4:
 
    ; arguments are already on the stack
    ; call the user's function
-   mov rdi, [rbp+16]   ; argc
-   mov rsi, [rbp+24]   ; argv pointer
-   mov rdx, [rbp+32]   ; env pointer
+   ;mov rdi, [rbp+16]   ; argc
+   ;mov rsi, [rbp+24]   ; argv pointer
+   ;mov rdx, [rbp+32]   ; env pointer
+
+   pop rsi
+   pop rdi
 
    call main
 
@@ -110,14 +117,8 @@ get_num_cpus:
    mov eax, dword [rcx]
    ret
 
-SECTION .note.ident
-ALIGN 4
-DD Ln1 - Ln0          ; name size (not including padding)
-DD 0                  ; desc size (not including padding)
-DD 0x01               ; type
-Ln0:
-DB "HermitCore", 0    ; name
-Ln1:
-ALIGN 4
+SECTION .data
+   global libc_sd
+   libc_sd dd -1
 
 SECTION .note.GNU-stack noalloc noexec nowrite progbits

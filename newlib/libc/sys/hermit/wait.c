@@ -30,8 +30,9 @@
 #include <_ansi.h>
 #include <_syslist.h>
 #include <errno.h>
-#include "syscall.h"
 #include "warning.h"
+
+extern int sys_wait(int* status);
 
 int
 _DEFUN (wait, (status),
@@ -48,7 +49,7 @@ _DEFUN (_wait_r, (ptr, status),
 	int ret;
 
 	/* create a child process */
-	ret = SYSCALL1(__NR_wait, status);
+	ret = sys_wait(status);
 	if (ret < 0) {
 		ptr->_errno = -ret;
 		ret = -1;

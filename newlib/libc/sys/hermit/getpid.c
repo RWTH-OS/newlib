@@ -31,7 +31,8 @@
 #include <_syslist.h>
 #include <errno.h>
 #include "warning.h"
-#include "syscall.h"
+
+extern int sys_getpid(void);
 
 int
 _DEFUN (getpid, (),
@@ -46,7 +47,7 @@ _DEFUN (_getpid_r, (ptr),
 {
 	int ret;
 
-        ret = SYSCALL0(__NR_getpid);
+        ret = sys_getpid();
 	if (ret < 0) {
 		ptr->_errno = -ret;
 		ret = -1;

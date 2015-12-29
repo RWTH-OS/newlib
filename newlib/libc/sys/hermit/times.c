@@ -31,7 +31,6 @@
 #include <_syslist.h>
 #include <sys/times.h>
 #include <errno.h>
-#include "syscall.h"
 
 clock_t
 _DEFUN (times, (buf),

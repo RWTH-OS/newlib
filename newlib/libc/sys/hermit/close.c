@@ -31,7 +31,8 @@
 #include <_syslist.h>
 #include <errno.h>
 #include "warning.h"
-#include "syscall.h"
+
+extern int sys_close(int fd);
 
 int
 _DEFUN (close, (fildes),
@@ -47,7 +48,7 @@ _DEFUN (_close_r, (ptr, fildes),
 {
 	int ret;
 
-        ret = SYSCALL1(__NR_close, fildes);
+        ret = sys_close(fildes);
 	if (ret < 0) {
 		ptr->_errno = -ret;
 		ret = -1;

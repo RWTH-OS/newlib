@@ -31,7 +31,8 @@
 #include <_syslist.h>
 #include <errno.h>
 #include "warning.h"
-#include "syscall.h"
+
+extern sys_write(int file, const void* ptr, size_t len);
 
 _ssize_t
 _DEFUN (write, (file, ptr, len),
@@ -49,9 +50,9 @@ _DEFUN (_write_r, (r, file, ptr, len),
         const void *ptr   _AND
         size_t  len)
 {
-	int ret; 
+	int ret;
 
-        ret = SYSCALL3(__NR_write, file, ptr, len); 
+        ret = sys_write(file, ptr, len);
 	if (ret < 0) {
 		r->_errno = -ret;
 		ret = -1;
