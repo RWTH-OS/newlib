@@ -98,21 +98,21 @@ L4:
 extern _ftext
 global get_cpufreq
 get_cpufreq:
-   mov rcx, phys - 0x1000 + 0x18
+   mov rcx, phys + 0x18
    xor rax, rax
    mov eax, dword [rcx]
    ret
 
 global isle_id
 isle_id:
-   mov rcx, phys - 0x1000 + 0x34
+   mov rcx, phys + 0x34
    xor rax, rax
    mov eax, dword [rcx]
    ret
 
 global get_num_cpus
 get_num_cpus:
-   mov rcx, phys - 0x1000 + 0x20
+   mov rcx, phys + 0x20
    xor rax, rax
    mov eax, dword [rcx]
    ret
