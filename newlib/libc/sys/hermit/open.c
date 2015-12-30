@@ -30,9 +30,8 @@
 #include <_ansi.h>
 #include <_syslist.h>
 #include <errno.h>
+#include "syscall.h"
 #include "warning.h"
-
-extern int sys_open(const char* file, int flags, int mode);
 
 int
 _DEFUN (open, (file, flags, mode),

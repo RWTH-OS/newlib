@@ -37,5 +37,4 @@
  */
 void __attribute__((weak)) _hermit_reent_init(void)
 {
-	return 0;
 }

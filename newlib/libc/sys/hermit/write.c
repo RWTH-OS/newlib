@@ -30,9 +30,8 @@
 #include <_ansi.h>
 #include <_syslist.h>
 #include <errno.h>
+#include "syscall.h"
 #include "warning.h"
-
-extern sys_write(int file, const void* ptr, size_t len);
 
 _ssize_t
 _DEFUN (write, (file, ptr, len),

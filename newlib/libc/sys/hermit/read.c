@@ -30,9 +30,8 @@
 #include <_ansi.h>
 #include <_syslist.h>
 #include <errno.h>
+#include "syscall.h"
 #include "warning.h"
-
-extern _ssize_t sys_read(int file, void* ptr, size_t len);
 
 _ssize_t
 _DEFUN (read, (file, ptr, len),

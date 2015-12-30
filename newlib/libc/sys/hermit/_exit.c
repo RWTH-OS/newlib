@@ -30,8 +30,7 @@
 #include <_ansi.h>
 #include <_syslist.h>
 #include <errno.h>
-
-void sys_exit(int);
+#include "syscall.h"
 
 _VOID
 _DEFUN (_exit, (rc),

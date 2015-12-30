@@ -30,9 +30,8 @@
 #include <_ansi.h>
 #include <_syslist.h>
 #include <errno.h>
+#include "syscall.h"
 #include "warning.h"
-
-extern int sys_getpid(void);
 
 int
 _DEFUN (getpid, (),

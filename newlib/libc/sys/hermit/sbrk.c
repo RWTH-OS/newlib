@@ -29,9 +29,8 @@
 #include <reent.h>
 #include <_syslist.h>
 #include <errno.h>
+#include "syscall.h"
 #include "warning.h"
-
-extern void* sys_sbrk(int incr);
 
 void*
 _DEFUN (sbrk, (incr),

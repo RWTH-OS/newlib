@@ -31,6 +31,7 @@
 #include <_syslist.h>
 #include <errno.h>
 #include <sys/types.h>
+#include "syscall.h"
 #include "warning.h"
 
 

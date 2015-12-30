@@ -36,9 +36,8 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <errno.h>
+#include "syscall.h"
 #include "warning.h"
-
-extern int sys_stat(const char* file, struct stat *st);
 
 int
 _DEFUN (stat, (file, st),

@@ -30,9 +30,8 @@
 #include <_ansi.h>
 #include <_syslist.h>
 #include <errno.h>
+#include "syscall.h"
 #include "warning.h"
-
-extern int sys_lseek(int file, _off_t ptr, int dir);
 
 _off_t
 _DEFUN (lseek, (file, ptr, dir),

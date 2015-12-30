@@ -30,9 +30,8 @@
 #include <_ansi.h>
 #include <_syslist.h>
 #include <errno.h>
+#include "syscall.h"
 #include "warning.h"
-
-extern int sys_execve(const char* name, char * const * argv, char * const * env);
 
 int
 _DEFUN (execve, (name, argv, env),
