@@ -38,12 +38,8 @@ extern exit
 extern optind
 phys equ 0x200000
 libc_start:
-   ; create first frame
-   ;xor rbp, rbp
-   ;push rbp ; pseudo return address
-   ;push rbp ; pseudo base pointer
-   ;mov rbp, rsp
-   ;and rsp, ~0xF ; align rsp
+   ; align rsp
+   and rsp, ~0x1F
 
    ; save arguments
    push rdi
@@ -64,21 +60,8 @@ libc_start:
 
    ; set default environment
    mov rax, environ
-   ;mov rdx, [rsp+32]
-   ;cmp rdx, 0
-   ;je L3
-   ;mov qword [rax], rdx
-   ;jmp L4
-L3:
    mov rdx, __env
    mov qword [rax], rdx
-L4:
-
-   ; arguments are already on the stack
-   ; call the user's function
-   ;mov rdi, [rbp+16]   ; argc
-   ;mov rsi, [rbp+24]   ; argv pointer
-   ;mov rdx, [rbp+32]   ; env pointer
 
    pop rsi
    pop rdi
