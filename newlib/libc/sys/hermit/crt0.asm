@@ -36,7 +36,7 @@ extern _hermit_reent_init
 extern atexit
 extern exit
 extern optind
-phys equ 0x200000
+phys equ 0x800000
 libc_start:
    ; align rsp
    and rsp, ~0x1F
