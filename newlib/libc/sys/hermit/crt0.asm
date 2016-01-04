@@ -29,7 +29,6 @@ SECTION .text
 global libc_start
 extern main
 extern environ
-extern __env
 extern _init
 extern _fini
 extern _hermit_reent_init
@@ -44,6 +43,7 @@ libc_start:
    ; save arguments
    push rdi
    push rsi
+   push rdx
 
    ; initialize libc
    call _hermit_reent_init
@@ -58,13 +58,14 @@ libc_start:
    ; optind is the index of the next element to be processed in argv
    mov dword [optind], 0
 
-   ; set default environment
-   mov rax, environ
-   mov rdx, __env
-   mov qword [rax], rdx
-
+   ; restore arguments
+   pop rdx
    pop rsi
    pop rdi
+
+   ; set default environment
+   mov rax, environ
+   mov qword [rax], rdx
 
    call main
 
