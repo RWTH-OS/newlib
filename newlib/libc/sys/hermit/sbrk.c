@@ -44,12 +44,10 @@ _DEFUN (_sbrk_r, (ptr, incr),
 	struct _reent *ptr _AND
 	ptrdiff_t incr)
 {
-	size_t ret;
-
-	ret = sys_sbrk(incr);
-	if (ret < 0x1000) {
-		ptr->_errno = -ret;
-		ret = -1;
+	ssize_t ret = sys_sbrk(incr);
+	if (ret <= 0) {
+		ptr->_errno = ENOMEM;
+		ret = 0;
 	}
 
 	return (void*) ret;
