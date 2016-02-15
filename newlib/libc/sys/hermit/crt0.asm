@@ -44,6 +44,7 @@ libc_start:
    push rdi
    push rsi
    push rdx
+   sub rsp, 8
 
    ; initialize libc
    call _hermit_reent_init
@@ -59,6 +60,7 @@ libc_start:
    mov dword [optind], 0
 
    ; restore arguments
+   add rsp, 8
    pop rdx
    pop rsi
    pop rdi
