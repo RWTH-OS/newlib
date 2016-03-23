@@ -29,9 +29,8 @@ SECTION .text
 global libc_start
 extern main
 extern environ
-extern _init
-extern _fini
-extern _hermit_reent_init
+extern __libc_init_array
+extern __libc_fini_array
 extern atexit
 extern exit
 extern optind
@@ -46,15 +45,12 @@ libc_start:
    push rdx
    sub rsp, 8
 
-   ; initialize libc
-   call _hermit_reent_init
+   ; call init function
+   call __libc_init_array
 
    ; register a function to be called at normal process termination
-   mov rdi, _fini
+   mov rdi, __libc_fini_array
    call atexit
-
-   ; call init function
-   call _init
 
    ; optind is the index of the next element to be processed in argv
    mov dword [optind], 0

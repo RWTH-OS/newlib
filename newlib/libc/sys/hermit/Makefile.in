@@ -73,7 +73,6 @@ am_lib_a_OBJECTS = lib_a-errno.$(OBJEXT) lib_a-chown.$(OBJEXT) \
 	lib_a-environ.$(OBJEXT) lib_a-execve.$(OBJEXT) \
 	lib_a-fork.$(OBJEXT) lib_a-getpid.$(OBJEXT) \
 	lib_a-kill.$(OBJEXT) lib_a-lseek.$(OBJEXT) \
-	lib_a-init.$(OBJEXT) lib_a-readlink.$(OBJEXT) \
 	lib_a-stat.$(OBJEXT) lib_a-times.$(OBJEXT) \
 	lib_a-wait.$(OBJEXT) lib_a-close.$(OBJEXT) \
 	lib_a-_exit.$(OBJEXT) lib_a-fstat.$(OBJEXT) \
@@ -208,7 +207,7 @@ INCLUDES = $(NEWLIB_CFLAGS) $(CROSS_CFLAGS) $(TARGET_CFLAGS)
 AM_CCASFLAGS = $(INCLUDES)
 noinst_LIBRARIES = lib.a
 NASMFLAGS = -felf64 
-lib_a_SOURCES = errno.c chown.c environ.c execve.c fork.c getpid.c kill.c lseek.c init.c readlink.c stat.c times.c wait.c close.c _exit.c fstat.c gettod.c isatty.c link.c open.c read.c sbrk.c symlink.c unlink.c write.c
+lib_a_SOURCES = errno.c chown.c environ.c execve.c fork.c getpid.c kill.c lseek.c readlink.c stat.c times.c wait.c close.c _exit.c fstat.c gettod.c isatty.c link.c open.c read.c sbrk.c symlink.c unlink.c write.c
 lib_a_CCASFLAGS = $(AM_CCASFLAGS)
 lib_a_CFLAGS = $(AM_CFLAGS)
 ACLOCAL_AMFLAGS = -I ../../..
@@ -318,12 +317,6 @@ lib_a-lseek.o: lseek.c
 
 lib_a-lseek.obj: lseek.c
 	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-lseek.obj `if test -f 'lseek.c'; then $(CYGPATH_W) 'lseek.c'; else $(CYGPATH_W) '$(srcdir)/lseek.c'; fi`
-
-lib_a-init.o: init.c
-	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-init.o `test -f 'init.c' || echo '$(srcdir)/'`init.c
-
-lib_a-init.obj: init.c
-	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-init.obj `if test -f 'init.c'; then $(CYGPATH_W) 'init.c'; else $(CYGPATH_W) '$(srcdir)/init.c'; fi`
 
 lib_a-readlink.o: readlink.c
 	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-readlink.o `test -f 'readlink.c' || echo '$(srcdir)/'`readlink.c
