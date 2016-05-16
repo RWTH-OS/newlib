@@ -34,7 +34,25 @@
 #include <errno.h>
 #include "warning.h"
 
-struct timeval;
+extern unsigned int get_cpufreq(void);
+static unsigned long long start_tsc;
+static unsigned long long freq = 0;
+
+inline static unsigned long long rdtsc(void)
+{
+	unsigned int lo, hi;
+	unsigned int id;
+
+	asm volatile ("rdtscp" : "=a"(lo), "=c"(id), "=d"(hi));
+
+	return ((unsigned long long)hi << 32ULL | (unsigned long long)lo);
+}
+
+__attribute__((constructor)) static void gettod_init(void)
+{
+	start_tsc = rdtsc();
+	freq = get_cpufreq() * 1000000ULL;
+}
 
 int
 _DEFUN (gettimeofday, (ptimeval, ptimezone),
@@ -50,6 +68,19 @@ _DEFUN (_gettimeofday_r, (ptr, ptimeval, ptimezone),
         struct timeval  *ptimeval  _AND
         void *ptimezone)
 {
-  ptr->_errno = ENOSYS;
-  return -1;
+	ptr->_errno = 0;
+
+	if (ptimeval) {
+		unsigned long long diff = rdtsc() - start_tsc;
+
+		ptimeval->tv_sec = diff / freq;
+		ptimeval->tv_usec = ((diff - ptimeval->tv_sec * freq) * 1000000ULL) / freq;
+	}
+
+	if (ptimezone) {
+		ptr->_errno = ENOSYS;
+		return -1;
+	}
+
+	return 0;
 }
