@@ -68,8 +68,6 @@ _DEFUN (_gettimeofday_r, (ptr, ptimeval, ptimezone),
         struct timeval  *ptimeval  _AND
         void *ptimezone)
 {
-	ptr->_errno = 0;
-
 	if (ptimeval) {
 		unsigned long long diff = rdtsc() - start_tsc;
 
