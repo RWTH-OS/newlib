@@ -1,76 +1,4 @@
 /*
-FUNCTION
-<<signal>>---specify handler subroutine for a signal
-
-INDEX
-	signal
-INDEX
-	_signal_r
-
-ANSI_SYNOPSIS
-	#include <signal.h>
-	void (*signal(int <[sig]>, void(*<[func]>)(int))) (int);
-
-	void (*_signal_r(void *<[reent]>, int <[sig]>, void(*<[func]>)(int))) (int);
-
-TRAD_SYNOPSIS
-	#include <signal.h>
-	char ( * signal(<[sig]>, <[func]>) )()
-	int <[sig]>;
-	char ( * <[func]> )();
-
-	char ( * _signal_r(<[reent]>, <[sig]>, <[func]>) )()
-	char *<[reent]>;
-	int <[sig]>;
-	char ( * <[func]> )();
-
-DESCRIPTION
-<<signal>> provides a simple signal-handling implementation for embedded
-targets.
-
-<<signal>> allows you to request changed treatment for a particular
-signal <[sig]>.  You can use one of the predefined macros <<SIG_DFL>>
-(select system default handling) or <<SIG_IGN>> (ignore this signal)
-as the value of <[func]>; otherwise, <[func]> is a function pointer
-that identifies a subroutine in your program as the handler for this signal.
-
-Some of the execution environment for signal handlers is
-unpredictable; notably, the only library function required to work
-correctly from within a signal handler is <<signal>> itself, and
-only when used to redefine the handler for the current signal value.
-
-Static storage is likewise unreliable for signal handlers, with one
-exception: if you declare a static storage location as `<<volatile
-sig_atomic_t>>', then you may use that location in a signal handler to
-store signal values.
-
-If your signal handler terminates using <<return>> (or implicit
-return), your program's execution continues at the point
-where it was when the signal was raised (whether by your program
-itself, or by an external event).  Signal handlers can also
-use functions such as <<exit>> and <<abort>> to avoid returning.
-
-The alternate function <<_signal_r>> is the reentrant version.
-The extra argument <[reent]> is a pointer to a reentrancy structure.
-
-@c FIXME: do we have setjmp.h and assoc fns?
-
-RETURNS
-If your request for a signal handler cannot be honored, the result is
-<<SIG_ERR>>; a specific error number is also recorded in <<errno>>.
-
-Otherwise, the result is the previous handler (a function pointer or
-one of the predefined macros).
-
-PORTABILITY
-ANSI C requires <<signal>>.
-
-No supporting OS subroutines are required to link with <<signal>>, but
-it will not have any useful effects, except for software generated signals,
-without an operating system that can actually raise exceptions.
-*/
-
-/*
  * signal.c
  * Original Author:	G. Haley
  *
@@ -140,7 +68,26 @@ _DEFUN (_signal_r, (ptr, sig, func),
   return old_func;
 }
 
+int
+_DEFUN(_sigaction_r, (ptr, int, const struct sigaction *, struct sigaction *),
+	struct _reent *ptr _AND
+	int sig _AND
+	const struct sigaction * act _AND
+	struct sigaction * oact)
+{
+	return 0;
+}
+
 #ifndef _REENT_ONLY
+
+int
+_DEFUN(sigaction, (int, const struct sigaction *, struct sigaction *),
+	int sig _AND
+	const struct sigaction * act _AND
+	struct sigaction * oact)
+{
+	return _sigaction_r (_REENT, sig, act, oact);
+}
 
 _sig_func_ptr
 _DEFUN (signal, (sig, func),

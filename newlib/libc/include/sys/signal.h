@@ -183,6 +183,10 @@ int _EXFUN(_kill, (pid_t, int));
 #if defined(__CYGWIN__) || defined(__rtems__) || defined(__SPU__)
 int _EXFUN(kill, (pid_t, int));
 #endif /* __CYGWIN__ || __rtems__ || __SPU__ */
+#ifdef defined(__hermit__)
+int _EXFUN(sigaction, (int, const struct sigaction *, struct sigaction *));
+#define pthread_sigmask sigaction
+#endif
 #if defined(__CYGWIN__) || defined(__rtems__)
 int _EXFUN(killpg, (pid_t, int));
 int _EXFUN(sigaction, (int, const struct sigaction *, struct sigaction *));
