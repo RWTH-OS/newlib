@@ -559,7 +559,7 @@ esac
 
 case "${host}" in
   *-*-hermit*)
-	newlib_cflags="${newlib_cflags} -DREENTRANT_SYSCALLS_PROVIDED -D__DYNAMIC_REENT__"
+	newlib_cflags="${newlib_cflags} -DREENTRANT_SYSCALLS_PROVIDED -D__DYNAMIC_REENT__ -DSIGNAL_PROVIDED"
 	;;
   *-*-cygwin*)
 	test -z "$cygwin_srcdir" && cygwin_srcdir=`cd ${srcdir}/../winsup/cygwin; pwd`

@@ -73,13 +73,14 @@ am_lib_a_OBJECTS = lib_a-errno.$(OBJEXT) lib_a-chown.$(OBJEXT) \
 	lib_a-environ.$(OBJEXT) lib_a-execve.$(OBJEXT) \
 	lib_a-fork.$(OBJEXT) lib_a-getpid.$(OBJEXT) \
 	lib_a-kill.$(OBJEXT) lib_a-lseek.$(OBJEXT) \
-	lib_a-stat.$(OBJEXT) lib_a-times.$(OBJEXT) \
-	lib_a-wait.$(OBJEXT) lib_a-close.$(OBJEXT) \
-	lib_a-_exit.$(OBJEXT) lib_a-fstat.$(OBJEXT) \
-	lib_a-gettod.$(OBJEXT) lib_a-isatty.$(OBJEXT) \
-	lib_a-link.$(OBJEXT) lib_a-open.$(OBJEXT) lib_a-read.$(OBJEXT) \
-	lib_a-sbrk.$(OBJEXT) lib_a-symlink.$(OBJEXT) \
-	lib_a-unlink.$(OBJEXT) lib_a-write.$(OBJEXT)
+	lib_a-readlink.$(OBJEXT) lib_a-stat.$(OBJEXT) \
+	lib_a-times.$(OBJEXT) lib_a-wait.$(OBJEXT) \
+	lib_a-close.$(OBJEXT) lib_a-_exit.$(OBJEXT) \
+	lib_a-fstat.$(OBJEXT) lib_a-gettod.$(OBJEXT) \
+	lib_a-isatty.$(OBJEXT) lib_a-link.$(OBJEXT) \
+	lib_a-open.$(OBJEXT) lib_a-read.$(OBJEXT) lib_a-sbrk.$(OBJEXT) \
+	lib_a-symlink.$(OBJEXT) lib_a-unlink.$(OBJEXT) \
+	lib_a-write.$(OBJEXT) lib_a-signal.$(OBJEXT)
 lib_a_OBJECTS = $(am_lib_a_OBJECTS)
 DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp =
@@ -128,6 +129,7 @@ LTLIBOBJS = @LTLIBOBJS@
 MAINT = @MAINT@
 MAKEINFO = @MAKEINFO@
 MKDIR_P = @MKDIR_P@
+NASM = @NASM@
 NEWLIB_CFLAGS = @NEWLIB_CFLAGS@
 NO_INCLUDE_LIST = @NO_INCLUDE_LIST@
 OBJEXT = @OBJEXT@
@@ -205,7 +207,7 @@ AUTOMAKE_OPTIONS = cygnus
 INCLUDES = $(NEWLIB_CFLAGS) $(CROSS_CFLAGS) $(TARGET_CFLAGS)
 AM_CCASFLAGS = $(INCLUDES)
 noinst_LIBRARIES = lib.a
-lib_a_SOURCES = errno.c chown.c environ.c execve.c fork.c getpid.c kill.c lseek.c readlink.c stat.c times.c wait.c close.c _exit.c fstat.c gettod.c isatty.c link.c open.c read.c sbrk.c symlink.c unlink.c write.c
+lib_a_SOURCES = errno.c chown.c environ.c execve.c fork.c getpid.c kill.c lseek.c readlink.c stat.c times.c wait.c close.c _exit.c fstat.c gettod.c isatty.c link.c open.c read.c sbrk.c symlink.c unlink.c write.c signal.c
 lib_a_CCASFLAGS = $(AM_CCASFLAGS)
 lib_a_CFLAGS = $(AM_CFLAGS)
 ACLOCAL_AMFLAGS = -I ../../..
@@ -411,6 +413,12 @@ lib_a-write.o: write.c
 
 lib_a-write.obj: write.c
 	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-write.obj `if test -f 'write.c'; then $(CYGPATH_W) 'write.c'; else $(CYGPATH_W) '$(srcdir)/write.c'; fi`
+
+lib_a-signal.o: signal.c
+	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-signal.o `test -f 'signal.c' || echo '$(srcdir)/'`signal.c
+
+lib_a-signal.obj: signal.c
+	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-signal.obj `if test -f 'signal.c'; then $(CYGPATH_W) 'signal.c'; else $(CYGPATH_W) '$(srcdir)/signal.c'; fi`
 
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	list='$(SOURCES) $(HEADERS) $(LISP) $(TAGS_FILES)'; \

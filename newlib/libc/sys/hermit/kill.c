@@ -26,6 +26,8 @@
  */
 
 #include "config.h"
+#include <stdlib.h>
+#include <signal.h>
 #include <reent.h>
 #include <_ansi.h>
 #include <_syslist.h>
@@ -40,12 +42,31 @@ _DEFUN (kill, (pid, sig),
 	return _kill_r(_REENT, pid, sig);
 }
 
+int kputs(char*);
+int kprintf(char*, ...);
+
 int
 _DEFUN (_kill_r, (ptr, pid, sig),
 	struct _reent *ptr _AND
         int pid  _AND
         int sig)
 {
+	if (sig < 0 || sig >= NSIG)
+	{
+		ptr->_errno = EINVAL;
+		return -1;
+	}
+
+	if (ptr->_sig_func && ptr->_sig_func[sig])
+	{
+		_sig_func_ptr func = ptr->_sig_func[sig];
+
+		if (_getpid_r(ptr) == pid) {
+			func(sig);
+			return 0;
+		}
+	}
+
 	ptr->_errno = EINVAL;
 	return -1;
 }

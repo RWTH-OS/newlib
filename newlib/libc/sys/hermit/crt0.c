@@ -34,6 +34,7 @@ int libc_sd = -1;
 extern int main(int argc, char** argv);
 extern void __libc_init_array(void);
 extern void __libc_fini_array (void);
+extern int _init_signal(void);
 extern char** environ;
 
 #define PHYS	0x800000ULL
@@ -52,6 +53,9 @@ int libc_start(int argc, char** argv, char** env)
    optind = 0;
 
    environ = env;
+
+   /* initialize simple signal handling */
+   _init_signal();
 
    ret = main(argc, argv);
 
