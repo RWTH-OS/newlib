@@ -165,7 +165,7 @@ struct sigaction
 
 int _EXFUN(sigprocmask, (int how, const sigset_t *set, sigset_t *oset));
 
-#if defined(_POSIX_THREADS)
+#if defined(_POSIX_THREADS) || defined(__hermit__)
 int _EXFUN(pthread_sigmask, (int how, const sigset_t *set, sigset_t *oset));
 #endif
 
@@ -183,9 +183,6 @@ int _EXFUN(_kill, (pid_t, int));
 #if defined(__CYGWIN__) || defined(__rtems__) || defined(__SPU__)
 int _EXFUN(kill, (pid_t, int));
 #endif /* __CYGWIN__ || __rtems__ || __SPU__ */
-#ifdef defined(__hermit__)
-int _EXFUN(sigaction, (int, const struct sigaction *, struct sigaction *));
-#endif
 #if defined(__CYGWIN__) || defined(__rtems__)
 int _EXFUN(killpg, (pid_t, int));
 int _EXFUN(sigaction, (int, const struct sigaction *, struct sigaction *));
@@ -230,6 +227,28 @@ int _EXFUN(sigqueue, (pid_t pid, int signo, const union sigval value));
 #endif /* defined(_POSIX_REALTIME_SIGNALS) */
 
 #endif /* defined(__CYGWIN__) || defined(__rtems__) */
+
+#if defined(__hermit__)
+/*
+ * Possible values for ss_flags in stack_t below.
+ */
+#define SS_ONSTACK	0x1
+#define SS_DISABLE	0x2
+
+#define SA_ONSTACK	0x4	/* Signal delivery will be on a separate stack. */
+
+/*
+ * Structure used in sigaltstack call.
+ */
+typedef struct sigaltstack {
+  void   *ss_sp;    /* Stack base or pointer.  */
+  int     ss_flags; /* Flags.  */
+  size_t  ss_size;  /* Stack size.  */
+} stack_t;
+
+int _EXFUN(sigaltstack, (const stack_t *, stack_t *));
+int _EXFUN(sigaction, (int, const struct sigaction *, struct sigaction *));
+#endif
 
 /* #endif __STRICT_ANSI__ */
 
