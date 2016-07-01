@@ -33,6 +33,7 @@
 #include <_syslist.h>
 #include <errno.h>
 #include "warning.h"
+#include "syscall.h"
 
 int
 _DEFUN (kill, (pid, sig),
@@ -57,16 +58,9 @@ _DEFUN (_kill_r, (ptr, pid, sig),
 		return -1;
 	}
 
-	if (ptr->_sig_func && ptr->_sig_func[sig])
-	{
-		_sig_func_ptr func = ptr->_sig_func[sig];
-
-		if (_getpid_r(ptr) == pid) {
-			func(sig);
-			return 0;
-		}
+	int ret = sys_kill(pid, sig);
+	if(ret) {
+		ptr->_errno = ret;
 	}
-
-	ptr->_errno = EINVAL;
-	return -1;
+	return ret;
 }
