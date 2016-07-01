@@ -28,6 +28,43 @@
 #include <reent.h>
 #include <malloc.h>
 #include <_syslist.h>
+#include "syscall.h"
+
+/*
+ * Notes:
+ *	- man 2 sigreturn
+ *	- man 7 signal
+*/
+static void
+signal_dispatcher(int signum)
+{
+	// assume to be called in user context
+	struct _reent* reent = _REENT;
+
+	if (signum < 0 || signum >= NSIG) {
+		reent->_errno = EINVAL;
+		return;
+	}
+
+	if(reent->_sig_func == NULL) {
+		reent->_errno = ENOENT;
+		return;
+	}
+
+	_sig_func_ptr func = reent->_sig_func[signum];
+
+	if(func == SIG_DFL) {
+		// TODO: review default actions, terminate for now
+		sys_exit(128 + signum);
+	} else if(func == SIG_IGN) {
+		// ignore
+	} else if(func == SIG_ERR) {
+		reent->_errno = EINVAL;
+	} else {
+		// finally call user code
+		func(signum);
+	}
+}
 
 int
 _DEFUN (_init_signal_r, (ptr),
@@ -45,6 +82,8 @@ _DEFUN (_init_signal_r, (ptr),
 		for (i = 0; i < NSIG; i++) {
 			ptr->_sig_func[i] = SIG_DFL;
 		}
+
+		sys_signal(signal_dispatcher);
 	}
 
 	return 0;
