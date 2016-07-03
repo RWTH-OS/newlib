@@ -16,7 +16,9 @@
 
 
 /*
- * Adapted by S. Lankes, RWTH Aachen University, for HermitCore.
+ * Adapted for HermitCore by:
+ *	- S. Lankes, RWTH Aachen University
+ *  - Daniel Krebs, RWTH Aachen University
  */
 
 #include <errno.h>
@@ -24,25 +26,67 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <reent.h>
+#include <malloc.h>
 #include <_syslist.h>
+#include "syscall.h"
+
+/*
+ * Notes:
+ *	- man 2 sigreturn
+ *	- man 7 signal
+*/
+static void
+signal_dispatcher(int signum)
+{
+	// assume to be called in user context
+	struct _reent* reent = _REENT;
+
+	if (signum < 0 || signum >= NSIG) {
+		reent->_errno = EINVAL;
+		return;
+	}
+
+	if(reent->_sig_func == NULL) {
+		reent->_errno = ENOENT;
+		return;
+	}
+
+	_sig_func_ptr func = reent->_sig_func[signum];
+
+	if(func == SIG_DFL) {
+		// TODO: review default actions, terminate for now
+		sys_exit(128 + signum);
+	} else if(func == SIG_IGN) {
+		// ignore
+	} else if(func == SIG_ERR) {
+		reent->_errno = EINVAL;
+	} else {
+		// finally call user code
+		func(signum);
+	}
+}
 
 int
 _DEFUN (_init_signal_r, (ptr),
 	struct _reent *ptr)
 {
-  int i;
+	int i;
 
-  if (ptr->_sig_func == NULL)
-    {
-      ptr->_sig_func = (_sig_func_ptr *)_malloc_r (ptr, sizeof (_sig_func_ptr) * NSIG);
-      if (ptr->_sig_func == NULL)
-	return -1;
+	if (ptr->_sig_func == NULL) {
+		ptr->_sig_func = (_sig_func_ptr *)_malloc_r (ptr, sizeof (_sig_func_ptr) * NSIG);
 
-      for (i = 0; i < NSIG; i++)
-	ptr->_sig_func[i] = SIG_DFL;
-    }
+		if (ptr->_sig_func == NULL) {
+			return -1;
+		}
 
-  return 0;
+		for (i = 0; i < NSIG; i++) {
+			ptr->_sig_func[i] = SIG_DFL;
+		}
+
+		sys_signal(signal_dispatcher);
+	}
+
+	return 0;
 }
 
 _sig_func_ptr
@@ -51,21 +95,21 @@ _DEFUN (_signal_r, (ptr, sig, func),
 	int sig _AND
 	_sig_func_ptr func)
 {
-  _sig_func_ptr old_func;
+	_sig_func_ptr old_func;
 
-  if (sig < 0 || sig >= NSIG)
-    {
-      ptr->_errno = EINVAL;
-      return SIG_ERR;
-    }
+	if (sig < 0 || sig >= NSIG) {
+		ptr->_errno = EINVAL;
+		return SIG_ERR;
+	}
 
-  if (ptr->_sig_func == NULL && _init_signal_r (ptr) != 0)
-    return SIG_ERR;
-  
-  old_func = ptr->_sig_func[sig];
-  ptr->_sig_func[sig] = func;
+	if (ptr->_sig_func == NULL && _init_signal_r (ptr) != 0) {
+		return SIG_ERR;
+	}
 
-  return old_func;
+	old_func = ptr->_sig_func[sig];
+	ptr->_sig_func[sig] = func;
+
+	return old_func;
 }
 
 int
@@ -94,13 +138,13 @@ _DEFUN (signal, (sig, func),
 	int sig _AND
 	_sig_func_ptr func)
 {
-  return _signal_r (_REENT, sig, func);
+	return _signal_r (_REENT, sig, func);
 }
 
 int 
 _DEFUN_VOID (_init_signal)
 {
-  return _init_signal_r (_REENT);
+	return _init_signal_r (_REENT);
 }
 
 #endif
