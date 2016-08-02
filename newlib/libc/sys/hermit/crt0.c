@@ -52,7 +52,8 @@ int libc_start(int argc, char** argv, char** env)
    /* optind is the index of the next element to be processed in argv */
    optind = 0;
 
-   environ = env;
+   if (env)
+      environ = env;
 
    /* initialize simple signal handling */
    _init_signal();
