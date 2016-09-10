@@ -70,6 +70,23 @@ newlib_signal_dispatcher(int signum)
 }
 
 int
+_DEFUN(pthread_sigmask, (how, set, oset),
+	int how _AND
+	const sigset_t *set _AND
+	sigset_t *oset)
+{
+	return ENOSYS;
+}
+
+int
+_DEFUN(sigaltstack, (ss, os),
+	const stack_t * ss _AND
+	stack_t * oss)
+{
+	return ENOSYS;
+}
+
+int
 _DEFUN (_init_signal_r, (ptr),
 	struct _reent *ptr)
 {
