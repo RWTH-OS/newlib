@@ -38,6 +38,16 @@ extern unsigned int get_cpufreq(void);
 static unsigned long long start_tsc;
 static unsigned long long freq = 0;
 
+#if 1
+inline static unsigned long long rdtsc(void)
+{
+	unsigned int lo, hi;
+
+	asm volatile ("rdtsc" : "=a"(lo), "=d"(hi) :: "memory");
+
+	return ((unsigned long long)hi << 32ULL | (unsigned long long)lo);
+}
+#else
 inline static unsigned long long rdtsc(void)
 {
 	unsigned int lo, hi;
@@ -47,6 +57,7 @@ inline static unsigned long long rdtsc(void)
 
 	return ((unsigned long long)hi << 32ULL | (unsigned long long)lo);
 }
+#endif
 
 __attribute__((constructor)) static void gettod_init(void)
 {
