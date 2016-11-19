@@ -5,7 +5,7 @@
 #ifndef _SYS_ERRNO_H
 #define _SYS_ERRNO_H
 
-/* --- from newlin's sys/errno.h --- */
+/* --- from newlib's sys/errno.h --- */
 
 #include <sys/reent.h>
 
