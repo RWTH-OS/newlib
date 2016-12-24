@@ -46,7 +46,7 @@ env:
      - STRIP_FOR_TARGET = $CROSSCOMPREFIX-strip
      - READELF_FOR_TARGET = $CROSSCOMPREFIX-readelf
      - ELFEDIT_FOR_TARGET = $CROSSCOMPREFIX-elfedit
-     - CFLAGS_FOR_TARGE = -m64 -mtls-direct-seg-refs -mno-red-zone -O3 -march=native -mtune=native -ftree-vectorize $STACKPROT
-     - FCFLAGS_FOR_TARGET = -m64 -mtls-direct-seg-refs -mno-red-zone -O3 -march=native -mtune=native -ftree-vectorize
-     - FFLAGS_FOR_TARGET = -m64 -mtls-direct-seg-refs -mno-red-zone -O3 -march=native -mtune=native -ftree-vectorize
-     - CXXFLAGS_FOR_TARGET = -m64 -mtls-direct-seg-refs -mno-red-zone -O3 -march=native -mtune=native -ftree-vectorize
+     - CFLAGS_FOR_TARGE = -m64 -mtls-direct-seg-refs -O3 -ftree-vectorize $STACKPROT
+     - FCFLAGS_FOR_TARGET = -m64 -mtls-direct-seg-refs -O3 -ftree-vectorize
+     - FFLAGS_FOR_TARGET = -m64 -mtls-direct-seg-refs -O3 -ftree-vectorize
+     - CXXFLAGS_FOR_TARGET = -m64 -mtls-direct-seg-refs -O3 -ftree-vectorize
