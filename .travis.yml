@@ -8,6 +8,8 @@ before_install:
 - sudo apt-get -qq update
 - sudo apt-get install -y nasm texinfo libmpfr-dev libmpc-dev libgmp-dev libisl-dev packaging-dev
 script:
+- alias x86_64-hermit-gcc="gcc -ffreestanding"
+- alias x86_64-hermit-g++="g++ -ffreestanding"
 - rm -rf .git
 - cd ..
 - mv newlib newlib-2.4.0
@@ -29,8 +31,6 @@ env:
      - TOPDIR=`pwd`/../..
      - CROSSCOMPREFIX = x86_64-hermit
      - STACKPROT = -fno-stack-protector
-     - alias x86_64-hermit-gcc="gcc -ffreestanding"
-     - alias x86_64-hermit-g++="g++ -ffreestanding"
      - FC_FOR_TARGET = $CROSSCOMPREFIX-gfortran
      - CC_FOR_TARGET = $CROSSCOMPREFIX-gcc
      - CXX_FOR_TARGET = $CROSSCOMPREFIX-g++
