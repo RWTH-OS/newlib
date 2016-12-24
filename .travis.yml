@@ -15,7 +15,7 @@ script:
 - mv newlib newlib-2.4.0
 - tar -czf newlib_2.4.0.orig.tar.gz newlib-2.4.0
 - wget https://bintray.com/rwth-os/hermitcore/download_file?file_path=binutils-hermit_2.26.1-1_amd64.deb
-- sudo apt install ./binutils-hermit_2.26.1-1_amd64.deb
+- sudo dpkg -i ./binutils-hermit_2.26.1-1_amd64.deb
 - cd newlib-2.4.0
 - debuild -us -uc
 deploy:
