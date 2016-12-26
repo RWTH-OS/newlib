@@ -1,5 +1,5 @@
 #!/bin/sh
-# prerm script for binutils
+# prerm script for newlib
 #
 # see: dh_installdeb(1)
 
@@ -13,7 +13,7 @@ set -e
 #        * <deconfigured's-prerm> `deconfigure' `in-favour'
 #          <package-being-installed> <version> `removing'
 #          <conflicting-package> <version>
-# for details, see http://www.debian.org/doc/debian-policy/ or
+# for details, see https://www.debian.org/doc/debian-policy/ or
 # the debian-policy package
 
 

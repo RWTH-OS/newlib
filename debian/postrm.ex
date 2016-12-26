@@ -1,5 +1,5 @@
 #!/bin/sh
-# postrm script for binutils
+# postrm script for newlib
 #
 # see: dh_installdeb(1)
 
@@ -15,7 +15,7 @@ set -e
 #        * <new-postrm> `abort-upgrade' <old-version>
 #        * <disappearer's-postrm> `disappear' <overwriter>
 #          <overwriter-version>
-# for details, see http://www.debian.org/doc/debian-policy/ or
+# for details, see https://www.debian.org/doc/debian-policy/ or
 # the debian-policy package
 
 

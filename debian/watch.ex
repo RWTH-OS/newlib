@@ -3,21 +3,37 @@
 # to check for upstream updates and more.
 # See uscan(1) for format
 
-# Compulsory line, this is a version 3 file
-version=3
+# Compulsory line, this is a version 4 file
+version=4
 
-# Uncomment to examine a Webpage
-# <Webpage URL> <string match>
-#http://www.example.com/downloads.php binutils-(.*)\.tar\.gz
+# PGP signature mangle, so foo.tar.gz has foo.tar.gz.sig
+#opts="pgpsigurlmangle=s%$%.sig%"
 
-# Uncomment to examine a Webserver directory
-#http://www.example.com/pub/binutils-(.*)\.tar\.gz
+# HTTP site (basic)
+#http://example.com/downloads.html \
+#  files/newlib-([\d\.]+)\.tar\.gz debian uupdate
 
 # Uncommment to examine a FTP server
-#ftp://ftp.example.com/pub/binutils-(.*)\.tar\.gz debian uupdate
+#ftp://ftp.example.com/pub/newlib-(.*)\.tar\.gz debian uupdate
 
-# Uncomment to find new files on sourceforge, for devscripts >= 2.9
-# http://sf.net/binutils/binutils-(.*)\.tar\.gz
+# SourceForge hosted projects
+# http://sf.net/newlib/ newlib-(.*)\.tar\.gz debian uupdate
+
+# GitHub hosted projects
+#opts="filenamemangle="s%(?:.*?)?v?(\d[\d.]*)\.tar\.gz%<project>-$1.tar.gz%" \
+#   https://github.com/<user>/newlib/tags \
+#   (?:.*?/)?v?(\d[\d.]*)\.tar\.gz debian uupdate
+
+# PyPI
+# https://pypi.python.org/packages/source/<initial>/newlib/ \
+#   newlib-(.+)\.tar\.gz debian uupdate
+
+# Direct Git
+# opts="mode=git" http://git.example.com/newlib.git \
+#   refs/tags/v([\d\.]+) debian uupdate
+
+
+
 
 # Uncomment to find new files on GooglePages
-# http://example.googlepages.com/foo.html binutils-(.*)\.tar\.gz
+# http://example.googlepages.com/foo.html newlib-(.*)\.tar\.gz

@@ -1,5 +1,5 @@
 #!/bin/sh
-# preinst script for binutils
+# preinst script for newlib
 #
 # see: dh_installdeb(1)
 
@@ -10,7 +10,7 @@ set -e
 #        * <new-preinst> `install' <old-version>
 #        * <new-preinst> `upgrade' <old-version>
 #        * <old-preinst> `abort-upgrade' <new-version>
-# for details, see http://www.debian.org/doc/debian-policy/ or
+# for details, see https://www.debian.org/doc/debian-policy/ or
 # the debian-policy package
 
 
