@@ -16,7 +16,6 @@ script:
 - tar -czf newlib_2.4.0.orig.tar.gz newlib-2.4.0
 - wget https://bintray.com/rwth-os/hermitcore/download_file?file_path=binutils-hermit_2.26.1-1_amd64.deb -O binutils-hermit_2.26.1-1_amd64.deb
 - sudo dpkg -i ./binutils-hermit_2.26.1-1_amd64.deb
-- export PATH=$PATH:/opt/hermit/bin/
 - cd newlib-2.4.0
 - debuild -us -uc
 deploy:
@@ -30,6 +29,7 @@ deploy:
 env:
    global:
      - TOPDIR=`pwd`/../..
+     - PATH=$PATH:/opt/hermit/bin/
      - CROSSCOMPREFIX = x86_64-hermit
      - STACKPROT = -fno-stack-protector
      - FC_FOR_TARGET = $CROSSCOMPREFIX-gfortran
