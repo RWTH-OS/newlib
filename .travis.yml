@@ -8,14 +8,16 @@ before_install:
 - sudo apt-get -qq update
 - sudo apt-get install -y nasm texinfo libmpfr-dev libmpc-dev libgmp-dev libisl-dev packaging-dev
 script:
-- alias x86_64-hermit-gcc="gcc -ffreestanding"
-- alias x86_64-hermit-g++="g++ -ffreestanding"
 - rm -rf .git
 - cd ..
 - mv newlib newlib-2.4.0
 - tar -czf newlib_2.4.0.orig.tar.gz newlib-2.4.0
+- cd $TOPDIR
 - wget https://bintray.com/rwth-os/hermitcore/download_file?file_path=binutils-hermit_2.26.1-1_amd64.deb -O binutils-hermit_2.26.1-1_amd64.deb
 - sudo dpkg -i ./binutils-hermit_2.26.1-1_amd64.deb
+- wget https://www.lankes.org/deploy/bootstrap.tar.gz
+- tar xzf bootstrap.tar.gz
+- cd -
 - cd newlib-2.4.0
 - debuild -us -uc
 deploy:
@@ -29,7 +31,7 @@ deploy:
 env:
    global:
      - TOPDIR=`pwd`/../..
-     - PATH=$PATH:/opt/hermit/bin/
+     - PATH=$PATH:$TOPDIR/x86/bin:/opt/hermit/bin/
      - CROSSCOMPREFIX = x86_64-hermit
      - STACKPROT = -fno-stack-protector
      - FC_FOR_TARGET = $CROSSCOMPREFIX-gfortran
