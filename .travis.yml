@@ -19,9 +19,7 @@ script:
 - tar xzf bootstrap.tar.gz
 - cd -
 - cd newlib-2.4.0
-- echo $PATH
-- ls -la /opt/hermit/bin/
-- debuild -us -uc
+- debuild -us -uc -e PATH
 deploy:
   on: hermit
   provider: bintray
