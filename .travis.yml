@@ -20,6 +20,7 @@ script:
 - cd -
 - cd newlib-2.4.0
 - echo $PATH
+- ls -la /opt/hermit/bin/
 - debuild -us -uc
 deploy:
   on: hermit
