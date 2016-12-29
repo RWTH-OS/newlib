@@ -12,10 +12,12 @@ script:
 - cd ..
 - mv newlib newlib-2.4.0
 - tar -czf newlib_2.4.0.orig.tar.gz newlib-2.4.0
+- cd $TOPDIR
 - wget https://bintray.com/rwth-os/hermitcore/download_file?file_path=binutils-hermit_2.26.1-1_amd64.deb -O binutils-hermit_2.26.1-1_amd64.deb
 - sudo dpkg -i ./binutils-hermit_2.26.1-1_amd64.deb
 - wget https://www.lankes.org/deploy/bootstrap.tar.gz
 - tar xzf bootstrap.tar.gz
+- cd -
 - cd newlib-2.4.0
 - debuild -us -uc
 deploy:
@@ -28,7 +30,7 @@ deploy:
     secure: a03NKi1Mq1kbI8+oUt5oww4G4+a2981fVTq3etT1ESCQQMtuNDF9qeXkXaRxPNcLNb60DJ2fB+Nv3QlB2MppAtv1i3ImwMnRBZGYA97hutCD4C0BWyVMglxKEcmgVH592n8KoiQpgnb+pOjIP7LxsBZ2APs/Gk9TWYXqtNAsNw9e61TurUJsGyEzq6CkDnrMwJ29WQTJZne6SEdQ1muKcgDWYTXY/+BsGoZOcmJC+n66PepGSRUUf2xog+PlhhIMm44aDr2LaHtaPp2JYrTUObMdbXzYVRA90ptRIrza2k/V2Uh7SxfXqW6zNs9DoFTp9gwz3ZAgfizbWBFimvBhEfPiWagycOP59PFAxP3/DwfMK9rpeg0GDsFjGi72IYaIr7n6430zslmnQsb4PiDi7vL7KamYQYJi0okUG5tXWiCqO1YRmjA7FRMXN8B3SLLrRRAqLM/QZ5b/SuMG9ccIyor2rhxbYX+4/g4aAyqCdh8c4X9lQXVvna8D/ify81QSMLXWM1JkL3IKnK/Cqr1bBK/mQSQBUc2JhlZAyiQhI9GO7s1wxDyZO9okYYCM8dfvQ7bcyeJR/pf/rrJTydUVEK5ETObP+QMXz2mA/F8+VXY6IAbHGyB4vRdZJ8BcxGLouqSndhYVa6dJ1oAiOI2XVh3DWG1iDt5jJtNGVswgExA=
 env:
    global:
-     - TOPDIR=`pwd`/../..
+     - TOPDIR=/home/travis/build/
      - PATH=$PATH:$TOPDIR/x86/bin:/opt/hermit/bin/
      - CROSSCOMPREFIX = x86_64-hermit
      - STACKPROT = -fno-stack-protector
