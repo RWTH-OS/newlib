@@ -12,3 +12,29 @@ all-local: crt0.o
  
 ACLOCAL_AMFLAGS = -I ../../..
 CONFIG_STATUS_DEPENDENCIES = $(newlib_basedir)/configure.host
+
+install-data-local:
+	$(mkinstalldirs) $(DESTDIR)$(tooldir)/include/netinet; \
+        for i in $(srcdir)/include/netinet/*.h; do \
+          $(INSTALL_DATA) $$i $(DESTDIR)$(tooldir)/include/netinet/`basename $$i`; \
+        done; \
+	$(mkinstalldirs) $(DESTDIR)$(tooldir)/include/arch; \
+	for i in $(srcdir)/include/arch/*.h; do \
+	  $(INSTALL_DATA) $$i $(DESTDIR)$(tooldir)/include/arch/`basename $$i`; \
+	done; \
+	$(mkinstalldirs) $(DESTDIR)$(tooldir)/include/lwip; \
+        for i in $(srcdir)/include/lwip/*.h; do \
+          $(INSTALL_DATA) $$i $(DESTDIR)$(tooldir)/include/lwip/`basename $$i`; \
+        done; \
+	$(mkinstalldirs) $(DESTDIR)$(tooldir)/include/lwip/priv; \
+        for i in $(srcdir)/include/lwip/priv/*.h; do \
+          $(INSTALL_DATA) $$i $(DESTDIR)$(tooldir)/include/lwip/priv/`basename $$i`; \
+        done; \
+	$(mkinstalldirs) $(DESTDIR)$(tooldir)/include/lwip/prot; \
+        for i in $(srcdir)/include/lwip/prot/*.h; do \
+          $(INSTALL_DATA) $$i $(DESTDIR)$(tooldir)/include/lwip/prot/`basename $$i`; \
+        done; \
+	$(mkinstalldirs) $(DESTDIR)$(tooldir)/include/lwip/apps; \
+        for i in $(srcdir)/include/lwip/apps/*.h; do \
+          $(INSTALL_DATA) $$i $(DESTDIR)$(tooldir)/include/lwip/apps/`basename $$i`; \
+        done;
