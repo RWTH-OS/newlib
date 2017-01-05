@@ -551,7 +551,7 @@ info: info-am
 
 info-am:
 
-install-data-am:
+install-data-am: install-data-local
 
 install-dvi: install-dvi-am
 
@@ -605,17 +605,43 @@ uninstall-am:
 	clean clean-cscope clean-generic clean-noinstLIBRARIES cscope \
 	cscopelist ctags distclean distclean-compile distclean-generic \
 	distclean-tags dvi dvi-am html html-am info info-am install \
-	install-am install-data install-data-am install-dvi \
-	install-dvi-am install-exec install-exec-am install-html \
-	install-html-am install-info install-info-am install-man \
-	install-pdf install-pdf-am install-ps install-ps-am \
-	install-strip installcheck installcheck-am installdirs \
-	maintainer-clean maintainer-clean-generic mostlyclean \
-	mostlyclean-compile mostlyclean-generic pdf pdf-am ps ps-am \
-	tags uninstall uninstall-am
+	install-am install-data install-data-am install-data-local \
+	install-dvi install-dvi-am install-exec install-exec-am \
+	install-html install-html-am install-info install-info-am \
+	install-man install-pdf install-pdf-am install-ps \
+	install-ps-am install-strip installcheck installcheck-am \
+	installdirs maintainer-clean maintainer-clean-generic \
+	mostlyclean mostlyclean-compile mostlyclean-generic pdf pdf-am \
+	ps ps-am tags uninstall uninstall-am
 
 
 all-local: crt0.o
+
+install-data-local:
+	$(mkinstalldirs) $(DESTDIR)$(tooldir)/include/netinet; \
+        for i in $(srcdir)/include/netinet/*.h; do \
+          $(INSTALL_DATA) $$i $(DESTDIR)$(tooldir)/include/netinet/`basename $$i`; \
+        done; \
+	$(mkinstalldirs) $(DESTDIR)$(tooldir)/include/arch; \
+	for i in $(srcdir)/include/arch/*.h; do \
+	  $(INSTALL_DATA) $$i $(DESTDIR)$(tooldir)/include/arch/`basename $$i`; \
+	done; \
+	$(mkinstalldirs) $(DESTDIR)$(tooldir)/include/lwip; \
+        for i in $(srcdir)/include/lwip/*.h; do \
+          $(INSTALL_DATA) $$i $(DESTDIR)$(tooldir)/include/lwip/`basename $$i`; \
+        done; \
+	$(mkinstalldirs) $(DESTDIR)$(tooldir)/include/lwip/priv; \
+        for i in $(srcdir)/include/lwip/priv/*.h; do \
+          $(INSTALL_DATA) $$i $(DESTDIR)$(tooldir)/include/lwip/priv/`basename $$i`; \
+        done; \
+	$(mkinstalldirs) $(DESTDIR)$(tooldir)/include/lwip/prot; \
+        for i in $(srcdir)/include/lwip/prot/*.h; do \
+          $(INSTALL_DATA) $$i $(DESTDIR)$(tooldir)/include/lwip/prot/`basename $$i`; \
+        done; \
+	$(mkinstalldirs) $(DESTDIR)$(tooldir)/include/lwip/apps; \
+        for i in $(srcdir)/include/lwip/apps/*.h; do \
+          $(INSTALL_DATA) $$i $(DESTDIR)$(tooldir)/include/lwip/apps/`basename $$i`; \
+        done;
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
