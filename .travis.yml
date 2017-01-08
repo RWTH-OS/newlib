@@ -19,7 +19,7 @@ script:
 - tar xzf bootstrap.tar.gz
 - cd -
 - cd newlib-2.4.0
-- debuild -e PATH -us -uc
+- debuild -e PATH -e GO_FOR_TARGET -e FC_FOR_TARGET -e CC_FOR_TARGET -e CXX_FOR_TARGET -e GCC_FOR_TARGET -e CPP_FOR_TARGET -e AR_FOR_TARGET -e AS_FOR_TARGET -e LD_FOR_TARGET -e OBJDUMP_FOR_TARGET -e OBJCOPY_FOR_TARGET -e RANLIB_FOR_TARGET -e STRIP_FOR_TARGET -e READELF_FOR_TARGET -e ELFEDIT_FOR_TARGET -e NM_FOR_TARGET -e CFLAGS_FOR_TARGET -e FCFLAGS_FOR_TARGET -e FFLAGS_FOR_TARGET -e GOFLAGS_FOR_NEWLIB -e CXXFLAGS_FOR_TARGET -us -uc
 deploy:
   on: production
   provider: bintray
@@ -49,7 +49,7 @@ env:
      - STRIP_FOR_TARGET = $CROSSCOMPREFIX-strip
      - READELF_FOR_TARGET = $CROSSCOMPREFIX-readelf
      - ELFEDIT_FOR_TARGET = $CROSSCOMPREFIX-elfedit
-     - CFLAGS_FOR_TARGET = -m64 -mtls-direct-seg-refs -O3 -ftree-vectorize $STACKPROT
+     - CFLAGS_FOR_TARGET = -m64 -mtls-direct-seg-refs -O3 -ftree-vectorize #$STACKPROT
      - FCFLAGS_FOR_TARGET = -m64 -mtls-direct-seg-refs -O3 -ftree-vectorize
      - FFLAGS_FOR_TARGET = -m64 -mtls-direct-seg-refs -O3 -ftree-vectorize
      - CXXFLAGS_FOR_TARGET = -m64 -mtls-direct-seg-refs -O3 -ftree-vectorize
