@@ -4,22 +4,20 @@ git:
   submodules: false
 language: c
 compiler: gcc
+
 before_install:
+- echo "deb https://dl.bintray.com/rwth-os/hermitcore vivid main" | sudo tee -a /etc/apt/sources.list
 - sudo apt-get -qq update
 - sudo apt-get install -y nasm texinfo libmpfr-dev libmpc-dev libgmp-dev libisl-dev packaging-dev
+- sudo apt-get install -y --force-yes gcc-hermit-bootstrap
+
 script:
-- rm -rf .git
 - cd ..
 - mv newlib newlib-2.4.0
-- tar -czf newlib_2.4.0.orig.tar.gz newlib-2.4.0
-- cd $TOPDIR
-- wget https://bintray.com/rwth-os/hermitcore/download_file?file_path=binutils-hermit_2.26.1-1_amd64.deb -O binutils-hermit_2.26.1-1_amd64.deb
-- sudo dpkg -i ./binutils-hermit_2.26.1-1_amd64.deb
-- wget https://www.lankes.org/deploy/bootstrap.tar.gz
-- tar xzf bootstrap.tar.gz
-- cd -
+- tar -czf newlib_2.4.0.orig.tar.gz newlib-2.4.0 --exclude=.git
 - cd newlib-2.4.0
-- debuild -e PATH -e GO_FOR_TARGET -e FC_FOR_TARGET -e CC_FOR_TARGET -e CXX_FOR_TARGET -e GCC_FOR_TARGET -e CPP_FOR_TARGET -e AR_FOR_TARGET -e AS_FOR_TARGET -e LD_FOR_TARGET -e OBJDUMP_FOR_TARGET -e OBJCOPY_FOR_TARGET -e RANLIB_FOR_TARGET -e STRIP_FOR_TARGET -e READELF_FOR_TARGET -e ELFEDIT_FOR_TARGET -e NM_FOR_TARGET -e CFLAGS_FOR_TARGET -e FCFLAGS_FOR_TARGET -e FFLAGS_FOR_TARGET -e GOFLAGS_FOR_NEWLIB -e CXXFLAGS_FOR_TARGET -us -uc
+- debuild -e PATH -us -uc -j2
+
 deploy:
   on: production
   provider: bintray
@@ -28,28 +26,7 @@ deploy:
     secure: tyfJpir8tFlcbo3m7MC6wVSQpNa6hwNISIdVlgY8CbL+tq3LMm/FxXFENB7NfTLb1pHQiCxV+q6pWTMI1O0KZSkGk7utA7inAVGubQSZFGBzuV9XGcT9HMHjW6Z+jk87n7+apkSiV8EvFjf3ZVZS9BsX0hZuBNYdGsv6O9vGvoFi6U3GjTC0FcN47CD7HVfcO0oQCrFGvqSthwJDp5ApZZKGwmdmlPnhgqdRrRKSUiY5QxKOHbvdiQn4SA3O3g0Wti19I0qYwfr4RPqCyrcOfD5In/IZW772pp+DjDpK6e8VDaCVzWhtkPqWqj3wGY7nxO9K2Xp6q3qS5ZyhHHFJhQMnyxRPGRWtoKV8IAo8CIJtICdgA/daVrrSqVfjHcU20k9gAhQzm3jwlJ3oldgwah7Sh8PrwxSb7rT9cmBeEVZgTjYVQY1srUK+PzM8bNmQEByjxCu5y4vsT/hXkgyH/3ZuKO6oXS+dDMU6pGE5nKN5O3xa8IGvGYqzkqehCgN5qVigAWQ9sglo4R15V3Xk6/Int8/4GbuOUBGAUaLtxWUsXxv3XWgj7FB1NmpPvOT4Nkto5LJ4jrns5CTRvZjy2mXug1phzglO7waUNmxXisEcJpbU8JRWQUR1/Vs1S9tcB/i4WhYPjdAeznJZMQ/m8Dc6vb/KLeeeUc9h3KdoppE=
   key:
     secure: a03NKi1Mq1kbI8+oUt5oww4G4+a2981fVTq3etT1ESCQQMtuNDF9qeXkXaRxPNcLNb60DJ2fB+Nv3QlB2MppAtv1i3ImwMnRBZGYA97hutCD4C0BWyVMglxKEcmgVH592n8KoiQpgnb+pOjIP7LxsBZ2APs/Gk9TWYXqtNAsNw9e61TurUJsGyEzq6CkDnrMwJ29WQTJZne6SEdQ1muKcgDWYTXY/+BsGoZOcmJC+n66PepGSRUUf2xog+PlhhIMm44aDr2LaHtaPp2JYrTUObMdbXzYVRA90ptRIrza2k/V2Uh7SxfXqW6zNs9DoFTp9gwz3ZAgfizbWBFimvBhEfPiWagycOP59PFAxP3/DwfMK9rpeg0GDsFjGi72IYaIr7n6430zslmnQsb4PiDi7vL7KamYQYJi0okUG5tXWiCqO1YRmjA7FRMXN8B3SLLrRRAqLM/QZ5b/SuMG9ccIyor2rhxbYX+4/g4aAyqCdh8c4X9lQXVvna8D/ify81QSMLXWM1JkL3IKnK/Cqr1bBK/mQSQBUc2JhlZAyiQhI9GO7s1wxDyZO9okYYCM8dfvQ7bcyeJR/pf/rrJTydUVEK5ETObP+QMXz2mA/F8+VXY6IAbHGyB4vRdZJ8BcxGLouqSndhYVa6dJ1oAiOI2XVh3DWG1iDt5jJtNGVswgExA=
+
 env:
    global:
-     - TOPDIR=/home/travis/build
-     - PATH=$PATH:$TOPDIR/x86/bin:/opt/hermit/bin
-     - CROSSCOMPREFIX = x86_64-hermit
-     - STACKPROT = -fno-stack-protector
-     - FC_FOR_TARGET = $CROSSCOMPREFIX-gfortran
-     - CC_FOR_TARGET = $CROSSCOMPREFIX-gcc
-     - CXX_FOR_TARGET = $CROSSCOMPREFIX-g++
-     - GCC_FOR_TARGET = $CROSSCOMPREFIX-gcc
-     - CPP_FOR_TARGET = $CROSSCOMPREFIX-cpp
-     - AR_FOR_TARGET = $CROSSCOMPREFIX-ar
-     - AS_FOR_TARGET = $CROSSCOMPREFIX-as
-     - LD_FOR_TARGET = $CROSSCOMPREFIX-ld
-     - NM_FOR_TARGET = $CROSSCOMPREFIX-nm
-     - OBJDUMP_FOR_TARGET = $CROSSCOMPREFIX-objdump
-     - OBJCOPY_FOR_TARGET = $CROSSCOMPREFIX-objcopy
-     - RANLIB_FOR_TARGET = $CROSSCOMPREFIX-ranlib
-     - STRIP_FOR_TARGET = $CROSSCOMPREFIX-strip
-     - READELF_FOR_TARGET = $CROSSCOMPREFIX-readelf
-     - ELFEDIT_FOR_TARGET = $CROSSCOMPREFIX-elfedit
-     - CFLAGS_FOR_TARGET = -m64 -mtls-direct-seg-refs -O3 -ftree-vectorize #$STACKPROT
-     - FCFLAGS_FOR_TARGET = -m64 -mtls-direct-seg-refs -O3 -ftree-vectorize
-     - FFLAGS_FOR_TARGET = -m64 -mtls-direct-seg-refs -O3 -ftree-vectorize
-     - CXXFLAGS_FOR_TARGET = -m64 -mtls-direct-seg-refs -O3 -ftree-vectorize
+     - PATH=$PATH:/opt/hermit/bin
