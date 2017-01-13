@@ -7,7 +7,7 @@
  * Sean Eric Fagan, sef@Kithrup.COM
  */
 
-#include "../../../../../include/hermit/config.h"
+#include <hermit/config.h>
 
 typedef struct _dirdesc {
 	int	dd_fd;
