@@ -7,4 +7,4 @@
 	dh $@ --builddirectory=build --parallel
 
 override_dh_auto_configure:
-	cd build; ../configure --target=x86_64-hermit --prefix=/opt/hermit --disable-shared --disable-multilib --disable-multilib --enable-lto --enable-newlib-hw-fp --enable-newlib-io-c99-formats --enable-newlib-multithread
+	mkdir -p build; cd build; ../configure --target=x86_64-hermit --prefix=/opt/hermit --disable-shared --disable-multilib --disable-multilib --enable-lto --enable-newlib-hw-fp --enable-newlib-io-c99-formats --enable-newlib-multithread
