@@ -8,3 +8,8 @@
 
 override_dh_auto_configure:
 	mkdir -p build; cd build; ../configure --target=x86_64-hermit --prefix=/opt/hermit --disable-shared --disable-multilib --disable-multilib --enable-lto --enable-newlib-hw-fp --enable-newlib-io-c99-formats --enable-newlib-multithread
+
+override_dh_strip:
+	# stripping will incorrectly use system tools for stripping, generating
+	# wrong binary format, i.e. not for HermitCore
+	@echo "No stripping"
