@@ -34,6 +34,8 @@
 #include <errno.h>
 #include "warning.h"
 
+#if __x86_64__
+
 extern unsigned int get_cpufreq(void);
 static unsigned long long start_tsc;
 static unsigned long long freq = 0;
@@ -64,7 +66,7 @@ __attribute__((constructor)) static void gettod_init(void)
 	start_tsc = rdtsc();
 	freq = get_cpufreq() * 1000000ULL;
 }
-
+#endif
 int
 _DEFUN (gettimeofday, (ptimeval, ptimezone),
         struct timeval  *ptimeval  _AND
@@ -79,6 +81,7 @@ _DEFUN (_gettimeofday_r, (ptr, ptimeval, ptimezone),
         struct timeval  *ptimeval  _AND
         void *ptimezone)
 {
+#if __x86_64__
 	if (ptimeval) {
 		unsigned long long diff = rdtsc() - start_tsc;
 
@@ -92,4 +95,8 @@ _DEFUN (_gettimeofday_r, (ptr, ptimeval, ptimezone),
 	}
 
 	return 0;
+#else
+	ptr->_errno = ENOSYS;
+	return -1;
+#endif
 }
