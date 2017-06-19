@@ -29,6 +29,7 @@ AC_PROG_RANLIB
 LIB_AM_PROG_AS
 
 case "${target}" in
+  *-*-hermit*)
   *-*-elf)
 	objtype=elf-
 	;;
