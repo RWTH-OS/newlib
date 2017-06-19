@@ -2506,6 +2506,8 @@ test "${CCASFLAGS+set}" = set || CCASFLAGS=$CFLAGS
 
 case "${target}" in
   *-*-hermit*)
+	objtype=elf-
+	;;
   *-*-elf)
 	objtype=elf-
 	;;

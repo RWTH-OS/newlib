@@ -30,6 +30,8 @@ LIB_AM_PROG_AS
 
 case "${target}" in
   *-*-hermit*)
+	objtype=elf-
+	;;
   *-*-elf)
 	objtype=elf-
 	;;
