@@ -13,6 +13,9 @@
 #include <sys/types.h>
 //#include <linux/fcntl.h>
 
+#define _FREAD		0x0001  /* read enabled */
+#define _FWRITE		0x0002  /* write enabled */
+
 /*
  * When introducing new O_* bits, please check its uniqueness in fcntl_init().
  */
