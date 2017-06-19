@@ -10,7 +10,5 @@ AC_CONFIG_AUX_DIR(../../../..)
 
 NEWLIB_CONFIGURE(../../..)
 
-AC_CHECK_PROG(NASM, nasm, nasm, :)
-
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT
