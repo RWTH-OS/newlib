@@ -124,31 +124,6 @@ int sys_signal(signal_handler_t handler);
 #define __NR_sem_cancelablewait	28
 #define __NR_get_ticks		29
 
-#ifndef __KERNEL__
-inline static long
-syscall(int nr, unsigned long arg0, unsigned long arg1, unsigned long arg2)
-{
-	long res;
-
-	// note: syscall stores the return address in rcx and rflags in r11
-	asm volatile ("syscall"
-		: "=a" (res)
-		: "a" (nr), "D" (arg0), "S" (arg1), "d" (arg2)
-		: "memory", "%rcx", "%r11");
-
-	return res;
-}
-
-#define SYSCALL0(NR) \
-	syscall(NR, 0, 0, 0)
-#define SYSCALL1(NR, ARG0) \
-	syscall(NR, (unsigned long)ARG0, 0, 0)
-#define SYSCALL2(NR, ARG0, ARG1) \
-	syscall(NR, (unsigned long)ARG0, (unsigned long)ARG1, 0)
-#define SYSCALL3(NR, ARG0, ARG1, ARG2) \
-	syscall(NR, (unsigned long)ARG0, (unsigned long)ARG1, (unsigned long)ARG2)
-#endif // __KERNEL__
-
 #ifdef __cplusplus
 }
 #endif
