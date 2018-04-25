@@ -34,13 +34,12 @@
 #include <errno.h>
 #include "warning.h"
 
-#if __x86_64__
+#ifdef __x86_64__
 
 extern unsigned int get_cpufreq(void);
 static unsigned long long start_tsc;
 static unsigned long long freq = 0;
 
-#if 1
 inline static unsigned long long rdtsc(void)
 {
 	unsigned int lo, hi;
@@ -49,24 +48,39 @@ inline static unsigned long long rdtsc(void)
 
 	return ((unsigned long long)hi << 32ULL | (unsigned long long)lo);
 }
-#else
-inline static unsigned long long rdtsc(void)
-{
-	unsigned int lo, hi;
-	unsigned int id;
-
-	asm volatile ("rdtscp" : "=a"(lo), "=c"(id), "=d"(hi));
-
-	return ((unsigned long long)hi << 32ULL | (unsigned long long)lo);
-}
-#endif
 
 __attribute__((constructor)) static void gettod_init(void)
 {
 	start_tsc = rdtsc();
 	freq = get_cpufreq() * 1000000ULL;
 }
+
+#elif defined(__aarch64__)
+
+static unsigned long long start_tsc;
+static unsigned long long freq = 0;
+
+static inline unsigned long long get_cntpct(void)
+{
+	unsigned long long value;
+	asm volatile("mrs %0, cntpct_el0" : "=r" (value) :: "memory");
+	return value;
+}
+
+static inline unsigned int get_cntfrq(void)
+{
+	unsigned int val;
+	asm volatile("mrs %0, cntfrq_el0" : "=r" (val) :: "memory");
+	return val;
+}
+
+__attribute__((constructor)) static void gettod_init(void)
+{
+	start_tsc = get_cntpct();
+	freq = get_cntfrq();
+}
 #endif
+
 int
 _DEFUN (gettimeofday, (ptimeval, ptimezone),
         struct timeval  *ptimeval  _AND
@@ -81,9 +95,23 @@ _DEFUN (_gettimeofday_r, (ptr, ptimeval, ptimezone),
         struct timeval  *ptimeval  _AND
         void *ptimezone)
 {
-#if __x86_64__
+#ifdef __x86_64__
 	if (ptimeval) {
 		unsigned long long diff = rdtsc() - start_tsc;
+
+		ptimeval->tv_sec = diff / freq;
+		ptimeval->tv_usec = ((diff - ptimeval->tv_sec * freq) * 1000000ULL) / freq;
+	}
+
+	if (ptimezone) {
+		ptr->_errno = ENOSYS;
+		return -1;
+	}
+
+	return 0;
+#elif defined(__aarch64__)
+	if (ptimeval) {
+		unsigned long long diff = get_cntpct() - start_tsc;
 
 		ptimeval->tv_sec = diff / freq;
 		ptimeval->tv_usec = ((diff - ptimeval->tv_sec * freq) * 1000000ULL) / freq;
