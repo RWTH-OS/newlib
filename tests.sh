@@ -36,7 +36,7 @@ apt-get install -y wget curl gnupg checkinstall gawk dialog apt-utils flex bison
 
 curl -L https://packagecloud.io/hermitcore/main/gpgkey | sudo apt-key add -
 sudo apt-get update
-sudo apt-get binutils-hermit gcc-hermit-bootstrap
+sudo apt-get install binutils-hermit gcc-hermit-bootstrap
 export PATH=/opt/hermit/bin:$PATH
 
 export CROSSCOMPREFIX=x86_64-hermit
