@@ -3,30 +3,6 @@ git:
   depth: 3
   submodules: false
 env:
-  global:
-    - TOPDIR=/home/travis/build
-    - PATH=$PATH:$TOPDIR/x86/bin:/opt/hermit/bin
-    - CROSSCOMPREFIX = x86_64-hermit
-    - STACKPROT = -fno-stack-protector
-    - FC_FOR_TARGET = $CROSSCOMPREFIX-gfortran
-    - CC_FOR_TARGET = $CROSSCOMPREFIX-gcc
-    - CXX_FOR_TARGET = $CROSSCOMPREFIX-g++
-    - GCC_FOR_TARGET = $CROSSCOMPREFIX-gcc
-    - CPP_FOR_TARGET = $CROSSCOMPREFIX-cpp
-    - AR_FOR_TARGET = $CROSSCOMPREFIX-ar
-    - AS_FOR_TARGET = $CROSSCOMPREFIX-as
-    - LD_FOR_TARGET = $CROSSCOMPREFIX-ld
-    - NM_FOR_TARGET = $CROSSCOMPREFIX-nm
-    - OBJDUMP_FOR_TARGET = $CROSSCOMPREFIX-objdump
-    - OBJCOPY_FOR_TARGET = $CROSSCOMPREFIX-objcopy
-    - RANLIB_FOR_TARGET = $CROSSCOMPREFIX-ranlib
-    - STRIP_FOR_TARGET = $CROSSCOMPREFIX-strip
-    - READELF_FOR_TARGET = $CROSSCOMPREFIX-readelf
-    - ELFEDIT_FOR_TARGET = $CROSSCOMPREFIX-elfedit
-    - CFLAGS_FOR_TARGET = -m64 -mtls-direct-seg-refs -O3 -ftree-vectorize #$STACKPROT
-    - FCFLAGS_FOR_TARGET = -m64 -mtls-direct-seg-refs -O3 -ftree-vectorize
-    - FFLAGS_FOR_TARGET = -m64 -mtls-direct-seg-refs -O3 -ftree-vectorize
-    - CXXFLAGS_FOR_TARGET = -m64 -mtls-direct-seg-refs -O3 -ftree-vectorize
  matrix:
   - OS_TYPE=debian OS_VERSION=8 OS_NAME=jessie
   - OS_TYPE=debian OS_VERSION=9 OS_NAME=stretch

@@ -39,6 +39,28 @@ sudo apt-get update
 sudo apt-get binutils-hermit gcc-hermit-bootstrap
 export PATH=/opt/hermit/bin:$PATH
 
+export CROSSCOMPREFIX = x86_64-hermit
+export STACKPROT = -fno-stack-protector
+export FC_FOR_TARGET = $CROSSCOMPREFIX-gfortran
+export CC_FOR_TARGET = $CROSSCOMPREFIX-gcc
+export CXX_FOR_TARGET = $CROSSCOMPREFIX-g++
+export GCC_FOR_TARGET = $CROSSCOMPREFIX-gcc
+export CPP_FOR_TARGET = $CROSSCOMPREFIX-cpp
+export AR_FOR_TARGET = $CROSSCOMPREFIX-ar
+export AS_FOR_TARGET = $CROSSCOMPREFIX-as
+export LD_FOR_TARGET = $CROSSCOMPREFIX-ld
+export NM_FOR_TARGET = $CROSSCOMPREFIX-nm
+export OBJDUMP_FOR_TARGET = $CROSSCOMPREFIX-objdump
+export OBJCOPY_FOR_TARGET = $CROSSCOMPREFIX-objcopy
+export RANLIB_FOR_TARGET = $CROSSCOMPREFIX-ranlib
+export STRIP_FOR_TARGET = $CROSSCOMPREFIX-strip
+export READELF_FOR_TARGET = $CROSSCOMPREFIX-readelf
+export ELFEDIT_FOR_TARGET = $CROSSCOMPREFIX-elfedit
+export CFLAGS_FOR_TARGET = -m64 -mtls-direct-seg-refs -O3 -ftree-vectorize #$STACKPROT
+export FCFLAGS_FOR_TARGET = -m64 -mtls-direct-seg-refs -O3 -ftree-vectorize
+export FFLAGS_FOR_TARGET = -m64 -mtls-direct-seg-refs -O3 -ftree-vectorize
+export CXXFLAGS_FOR_TARGET = -m64 -mtls-direct-seg-refs -O3 -ftree-vectorize
+
 mkdir -p build
 cd build
 ../configure --target=x86_64-hermit --disable-shared --disable-multilib --disable-multilib --enable-lto --enable-newlib-hw-fp --enable-newlib-io-c99-formats --enable-newlib-multithread --disable-multilib --prefix=/opt/hermit #--enable-newlib-reent-small
